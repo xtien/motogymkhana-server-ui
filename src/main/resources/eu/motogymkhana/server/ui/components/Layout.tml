@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>${title}</title>
+    </head>
+    <body>
+        <!-- start header -->
+        <div class="header">
+             <div class="logo">
+                   <img src="http://www.christine.nl/mgPics/MotoGymkhanaLogo.png" 
+                         alt="Banner" />
+            </div>
+            <div class="menu">
+                <ul>
+                    <li t:type="loop" source="pageNames" value="pageName" class="prop:classForPageName">
+                        <t:pagelink page="prop:pageName">${pageNameString}</t:pagelink>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- end header -->
+        <!-- start page -->
+        <div class="page">
+             <!-- start content -->
+            <div class="content">
+                <div class="post">
+                      <div class="entry">
+                        <t:body/>
+                    </div>
+                </div>
+            </div>
+            <!-- end content -->
+            <br style="clear: both;"/>
+        </div>
+        <!-- end page -->
+        <!-- start footer -->
+        <div class="footer">
+            <p class="legal">
+                &copy;2013, 2014, 2015 Maas AI-Tech All Rights Reserved. v${version}
+                &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                Design by Christine                
+            </p>
+        </div>
+        <!-- end footer -->
+    </body>
+</html>

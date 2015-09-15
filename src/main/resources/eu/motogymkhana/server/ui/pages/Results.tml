@@ -1,0 +1,67 @@
+<html t:type="layout" title="Moto Gymkhana"
+      t:sidebarTitle="Framework Version"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+
+<h2>${title}</h2>
+
+<p>${resultCode} ${message} ${text}</p>
+ <table><tr><td>
+ 
+  <div class="eg">
+      <t:form t:id="form" class="form-inline">
+            <div class="form-group">
+      <p>
+         Round: <t:select t:id="round" model="roundsModel" encoder="roundEncoder"/>
+          <t:submit value="literal:Submit" /> <span class="dateHeader">${round.dateString} Results</span>
+      </p>
+         </div>
+   
+  </t:form>
+       </div>
+</td><td>
+
+<p >
+ <t:pagelink page="index" context="round.number" class="links">Start List</t:pagelink>
+ <t:pagelink page="totals" context="round.number" class="links">Totals</t:pagelink>
+</p>
+</td></tr></table>
+	        <t:eventlink t:id="refreshZone" style="display: none;" >Hidden EventLink</t:eventlink>
+
+ <t:zone t:id="resultsZone" id="resultsZone">
+	<table class="table">
+	
+			<tr><th></th><th></th><th></th><th></th><th></th>
+			<th colspan="2" class='heat-header'>Heat 1</th>
+			<th colspan="2" class='heat-header'>Heat 2</th>
+			<th></th></tr>
+			
+			<tr><th></th><th></th><th></th><th></th><th></th>
+			<th class='points' >penalty</th>
+			<th class='points' >time</th>
+			<th class='points' >penalty</th>
+			<th class='points' >time</th>
+			<th class='time'>Best time</th></tr>
+	
+	       	<t:loop source="riders" value="rider" formState="iteration">
+	       	<tr> 
+	       
+	       	<td>${rider.position}</td> 
+	       	<td class='number' bgcolor = '${rider.bibColor}'> ${rider.startNumber} </td>
+	       	<td class='points'> ${rider.country} </td>
+	       	<td class='points'> ${rider.gender} </td>    	
+	       	<td class='table-text'> ${rider.fullName}</td>
+			<td class='points'>${rider.penalty1}</td>
+			<td class='time'> ${rider.time1}</td>
+	        <td class='points'>${rider.penalty2}</td>
+	        <td class='time'> ${rider.time2}</td>
+	  		<td class='time'>${rider.bestTimeString}</td>
+	
+	        </tr>
+			</t:loop>
+	</table>
+
+</t:zone>
+
+</html>

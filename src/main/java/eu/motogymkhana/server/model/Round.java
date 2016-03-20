@@ -11,16 +11,18 @@ import eu.motogymkhana.server.ui.Constants;
 
 public class Round {
 
-	private static final String ID = "id";
 	public static final String DATE = "date";
-	private static final String SORTED = "sorted";
 	public static final String NUMBER = "number";
 	private static final String TIMESTAMP = "timestamp";
 	private static final String CURRENT = "current";
 	private static final String COUNTRY = "country";
+	private static final String SEASON = "season";
 
 	@JsonIgnore
 	private int _id;
+
+	@JsonProperty(SEASON)
+	private int season;
 
 	@JsonProperty(NUMBER)
 	private int number;

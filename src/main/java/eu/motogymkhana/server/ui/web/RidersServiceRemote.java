@@ -1,6 +1,10 @@
 package eu.motogymkhana.server.ui.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import eu.motogymkhana.server.api.ListRidersResult;
+import eu.motogymkhana.server.model.Country;
+import eu.motogymkhana.server.model.Rider;
 
 /**
  * The <code>IAgentServiceRemote</code> bean exposes the business methods in the
@@ -8,6 +12,7 @@ import eu.motogymkhana.server.api.ListRidersResult;
  */
 public interface RidersServiceRemote {
 
-	ListRidersResult getRiders();
+	ListRidersResult getRiders(Country country, int season) throws JsonProcessingException;
 
+	Rider getRider(String riderName);
 }

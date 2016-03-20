@@ -10,12 +10,16 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import eu.motogymkhana.server.api.GymkhanaRequest;
 import eu.motogymkhana.server.api.ListRoundsResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.ui.api.URLHelper;
+import eu.motogymkhana.server.ui.api.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceRemote;
@@ -31,20 +35,28 @@ public class RoundsServiceImpl implements RoundsServiceLocal, RoundsServiceRemot
 
 	@Inject
 	private ObjectMapper mapper;
+	
+	@Inject
+	private URLHelper urlHelper;
 
 	private HashMap<Integer, Round> roundsMap = new HashMap<Integer, Round>();
 
 	@Override
-	public ListRoundsResult getRounds() {
+	public ListRoundsResult getRounds(Country country, int season) throws JsonProcessingException {
 
 		ListRoundsResult result = new ListRoundsResult();
+		GymkhanaRequest request = new GymkhanaRequest(country, season);
+		String input = mapper.writeValueAsString(request);
 
 		try {
-			HttpResultWrapper httpResult = client.getStringFromUrl(URLHelper.getListRoundsUrl());
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getListRoundsUrl(),input);
+			logger.debug("getRounds " + httpResult.getStatusCode());
 
 			result.setResultCode(httpResult.getStatusCode());
 
 			if (httpResult.getStatusCode() == 200) {
+				
+				logger.debug("rounds = " + httpResult.getString());
 
 				ListRoundsResult roundsResult = mapper.readValue(httpResult.getString(),
 						ListRoundsResult.class);

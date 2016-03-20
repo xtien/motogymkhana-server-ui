@@ -1,0 +1,171 @@
+EXCEPTION STACK:
+
+
+        Exception: org.apache.tapestry5.ioc.internal.OperationException
+          Message: Exception assembling root component of page Totals: Could not convert '[country, otherSeason, round.number]' into a component parameter binding: Exception generating conduit for expression '[country, otherSeason, round.number]': Class eu.motogymkhana.server.ui.pages.Totals does not contain a property (or public field) named 'country'.
+            trace: Constructing instance of page class eu.motogymkhana.server.ui.pages.Totals
+                   Assembling root component for page Totals
+
+        Exception: java.lang.RuntimeException
+          Message: Exception assembling root component of page Totals: Could not convert '[country, otherSeason, round.number]' into a component parameter binding: Exception generating conduit for expression '[country, otherSeason, round.number]': Class eu.motogymkhana.server.ui.pages.Totals does not contain a property (or public field) named 'country'.
+
+        Exception: org.apache.tapestry5.ioc.internal.util.TapestryException
+          Message: Could not convert '[country, otherSeason, round.number]' into a component parameter binding: Exception generating conduit for expression '[country, otherSeason, round.number]': Class eu.motogymkhana.server.ui.pages.Totals does not contain a property (or public field) named 'country'.
+         location: classpath:eu/motogymkhana/server/ui/pages/Totals.tml, line 26
+
+        Exception: org.apache.tapestry5.internal.services.PropertyExpressionException
+          Message: Exception generating conduit for expression '[country, otherSeason, round.number]': Class eu.motogymkhana.server.ui.pages.Totals does not contain a property (or public field) named 'country'.
+       expression: [country, otherSeason, round.number]
+
+        Exception: org.apache.tapestry5.ioc.util.UnknownValueException
+          Message: Class eu.motogymkhana.server.ui.pages.Totals does not contain a property (or public field) named 'country'.
+  availableValues: AvailableValues[Properties (and public fields): class, componentResources, currentTime, message, otherSeason, resultCode, rider, riders, round, roundEncoder, rounds, roundsModel, season, text, title]
+
+  Stack trace:
+
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.findPropertyAdapter(PropertyConduitSourceImpl.java:1168)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.buildPropertyAccessTerm(PropertyConduitSourceImpl.java:1136)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.buildTerm(PropertyConduitSourceImpl.java:1125)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.implementSubexpression(PropertyConduitSourceImpl.java:779)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.implementListConstructor(PropertyConduitSourceImpl.java:891)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.access$2000(PropertyConduitSourceImpl.java:243)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder$15.doBuild(PropertyConduitSourceImpl.java:871)
+  - org.apache.tapestry5.internal.plastic.InstructionBuilderImpl.doCallback(InstructionBuilderImpl.java:899)
+  - org.apache.tapestry5.internal.plastic.PlasticMethodImpl.changeImplementation(PlasticMethodImpl.java:143)
+  - org.apache.tapestry5.internal.plastic.PlasticClassImpl.introduceMethod(PlasticClassImpl.java:960)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.implementListGetter(PropertyConduitSourceImpl.java:867)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.implementAccessors(PropertyConduitSourceImpl.java:450)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.implementNavMethodAndAccessors(PropertyConduitSourceImpl.java:409)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl$PropertyConduitBuilder.transform(PropertyConduitSourceImpl.java:279)
+  - org.apache.tapestry5.plastic.PlasticManager.createProxy(PlasticManager.java:251)
+  - org.apache.tapestry5.plastic.PlasticManager.createProxy(PlasticManager.java:229)
+  - org.apache.tapestry5.ioc.internal.services.PlasticProxyFactoryImpl.createProxy(PlasticProxyFactoryImpl.java:74)
+  - $PlasticProxyFactory_3b685ac3a8d1f.createProxy(Unknown Source)
+  - $PlasticProxyFactory_3b685ac3a8d1e.createProxy(Unknown Source)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl.build(PropertyConduitSourceImpl.java:1461)
+  - org.apache.tapestry5.internal.services.PropertyConduitSourceImpl.create(PropertyConduitSourceImpl.java:1375)
+  - $PropertyConduitSource_3b685ac3a8d7c.create(Unknown Source)
+  - org.apache.tapestry5.internal.bindings.PropBindingFactory.newBinding(PropBindingFactory.java:47)
+  - $BindingFactory_3b685ac3a8d7d.newBinding(Unknown Source)
+  - $BindingFactory_3b685ac3a8d74.newBinding(Unknown Source)
+  - org.apache.tapestry5.internal.services.BindingSourceImpl.newBinding(BindingSourceImpl.java:81)
+  - $BindingSource_3b685ac3a8d13.newBinding(Unknown Source)
+  - org.apache.tapestry5.internal.services.PageElementFactoryImpl.newBinding(PageElementFactoryImpl.java:180)
+  - $PageElementFactory_3b685ac3a8d49.newBinding(Unknown Source)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$10.execute(PageLoaderImpl.java:883)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl.runActions(ComponentAssemblerImpl.java:229)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl.performAssembleRootComponent(ComponentAssemblerImpl.java:105)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl.access$000(ComponentAssemblerImpl.java:37)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl$1.invoke(ComponentAssemblerImpl.java:81)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl$1.invoke(ComponentAssemblerImpl.java:78)
+  - org.apache.tapestry5.ioc.internal.OperationTrackerImpl.invoke(OperationTrackerImpl.java:82)
+  - org.apache.tapestry5.ioc.internal.PerThreadOperationTracker.invoke(PerThreadOperationTracker.java:72)
+  - org.apache.tapestry5.ioc.internal.RegistryImpl.invoke(RegistryImpl.java:1260)
+  - org.apache.tapestry5.internal.pageload.ComponentAssemblerImpl.assembleRootComponent(ComponentAssemblerImpl.java:76)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$3.invoke(PageLoaderImpl.java:197)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$3.invoke(PageLoaderImpl.java:190)
+  - org.apache.tapestry5.ioc.internal.OperationTrackerImpl.invoke(OperationTrackerImpl.java:82)
+  - org.apache.tapestry5.ioc.internal.PerThreadOperationTracker.invoke(PerThreadOperationTracker.java:72)
+  - org.apache.tapestry5.ioc.internal.RegistryImpl.invoke(RegistryImpl.java:1260)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl.loadPage(PageLoaderImpl.java:189)
+  - $PageLoader_3b685ac3a8d33.loadPage(Unknown Source)
+  - org.apache.tapestry5.internal.services.PageSourceImpl.getPage(PageSourceImpl.java:104)
+  - $PageSource_3b685ac3a8d32.getPage(Unknown Source)
+  - org.apache.tapestry5.internal.services.RequestPageCacheImpl.get(RequestPageCacheImpl.java:86)
+  - $RequestPageCache_3b685ac3a8d31.get(Unknown Source)
+  - $RequestPageCache_3b685ac3a8d28.get(Unknown Source)
+  - org.apache.tapestry5.internal.services.ComponentSourceImpl.getPage(ComponentSourceImpl.java:83)
+  - $ComponentSource_3b685ac3a8cdc.getPage(Unknown Source)
+  - eu.motogymkhana.server.ui.security.RequiresLoginFilter.dispatchedToLoginPage(RequiresLoginFilter.java:62)
+  - eu.motogymkhana.server.ui.security.RequiresLoginFilter.handlePageRender(RequiresLoginFilter.java:49)
+  - $ComponentRequestFilter_3b685ac3a8d27.handlePageRender(Unknown Source)
+  - $ComponentRequestHandler_3b685ac3a8d2b.handlePageRender(Unknown Source)
+  - $ComponentRequestHandler_3b685ac3a8cf4.handlePageRender(Unknown Source)
+  - org.apache.tapestry5.internal.services.PageRenderDispatcher.dispatch(PageRenderDispatcher.java:55)
+  - $Dispatcher_3b685ac3a8cf6.dispatch(Unknown Source)
+  - $Dispatcher_3b685ac3a8cee.dispatch(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$RequestHandlerTerminator.service(TapestryModule.java:305)
+  - org.apache.tapestry5.internal.services.RequestErrorFilter.service(RequestErrorFilter.java:26)
+  - $RequestHandler_3b685ac3a8cef.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$3.service(TapestryModule.java:846)
+  - $RequestHandler_3b685ac3a8cef.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$2.service(TapestryModule.java:836)
+  - $RequestHandler_3b685ac3a8cef.service(Unknown Source)
+  - org.apache.tapestry5.internal.services.StaticFilesFilter.service(StaticFilesFilter.java:89)
+  - $RequestHandler_3b685ac3a8cef.service(Unknown Source)
+  - eu.motogymkhana.server.ui.services.AppModule$1.service(AppModule.java:130)
+  - $RequestFilter_3b685ac3a8cea.service(Unknown Source)
+  - $RequestHandler_3b685ac3a8cef.service(Unknown Source)
+  - $RequestHandler_3b685ac3a8ce4.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$HttpServletRequestHandlerTerminator.service(TapestryModule.java:256)
+  - org.apache.tapestry5.upload.internal.services.MultipartServletRequestFilter.service(MultipartServletRequestFilter.java:45)
+  - $HttpServletRequestHandler_3b685ac3a8ce6.service(Unknown Source)
+  - org.apache.tapestry5.internal.gzip.GZipFilter.service(GZipFilter.java:59)
+  - $HttpServletRequestHandler_3b685ac3a8ce6.service(Unknown Source)
+  - org.apache.tapestry5.internal.services.IgnoredPathsFilter.service(IgnoredPathsFilter.java:62)
+  - $HttpServletRequestFilter_3b685ac3a8ce0.service(Unknown Source)
+  - $HttpServletRequestHandler_3b685ac3a8ce6.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$1.service(TapestryModule.java:796)
+  - $HttpServletRequestHandler_3b685ac3a8ce6.service(Unknown Source)
+  - $HttpServletRequestHandler_3b685ac3a8cdf.service(Unknown Source)
+  - org.apache.tapestry5.TapestryFilter.doFilter(TapestryFilter.java:166)
+  - org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1212)
+  - org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:399)
+  - org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+  - org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:182)
+  - org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:766)
+  - org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:450)
+  - org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+  - org.mortbay.jetty.Server.handle(Server.java:326)
+  - org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:542)
+  - org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:928)
+  - org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:549)
+  - org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:212)
+  - org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)
+  - org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:410)
+  - org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+
+REQUEST:
+
+Basic Information:
+
+                contextPath: /mgnl
+                     method: GET
+                       path: /totals/NL/2015/1
+                     locale: en_US
+                 serverName: localhost
+                 remoteHost: 0:0:0:0:0:0:0:1
+
+Headers:
+
+                     Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+            Accept-Encoding: gzip, deflate, sdch
+            Accept-Language: en-US,en;q=0.8
+                 Connection: keep-alive
+                       Host: localhost:8080
+                    Referer: http://localhost:8080/mgnl/NL/2015/0
+  Upgrade-Insecure-Requests: 1
+                 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36
+
+SYSTEM INFORMATION:
+
+Memory:
+      189,138,552 bytes free
+      311,427,072 bytes total
+    3,717,201,920 bytes max
+
+14 Threads:
+                                                            Reference Handler WAITING, daemon, priority 10
+                                                                    Finalizer WAITING, daemon, priority 8
+                                                            Signal Dispatcher RUNNABLE, daemon, priority 9
+                                                                         main WAITING
+                                                                     Thread-1 TIMED_WAITING
+                                                                     Thread-2 RUNNABLE
+                                                  2022351518@qtp-1569683791-0 TIMED_WAITING
+  1128920667@qtp-1569683791-1 - Acceptor0 SelectChannelConnector@0.0.0.0:8080 RUNNABLE
+                                                                      Timer-0 TIMED_WAITING, daemon
+                                                    62259468@qtp-1569683791-2 TIMED_WAITING
+*                                                 1807536060@qtp-1569683791-3 RUNNABLE
+                                                  2029305649@qtp-1569683791-5 TIMED_WAITING
+                                                  1820347234@qtp-1569683791-6 TIMED_WAITING
+                                                    36272435@qtp-1569683791-7 TIMED_WAITING

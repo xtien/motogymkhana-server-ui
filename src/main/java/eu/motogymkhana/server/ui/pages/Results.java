@@ -19,12 +19,16 @@ import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import eu.motogymkhana.server.api.ListRidersResult;
 import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.RiderBestTimeComparator;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
@@ -55,7 +59,7 @@ public class Results {
 	private Integer roundNumber = -1;
 
 	@Property
-	private String title = "Moto Gymkhana Competition results";
+	private String title = Constants.TITLE;
 
 	@Property
 	private List<Rider> riders = new ArrayList<Rider>();
@@ -82,6 +86,15 @@ public class Results {
 	@Property
 	private SelectModel roundsModel;
 
+	@Property
+	private int season = 2015;
+
+	@Property
+	private int otherSeason = 2016;
+
+	@Property
+	private Country country = Country.NL;
+
 	@Inject
 	private SelectModelFactory selectModelFactory;
 
@@ -97,23 +110,50 @@ public class Results {
 	@InjectPage
 	private Totals totalsPage;
 
+	@Property
+	private Boolean hasTotals = true;
+
 	void onPrepare() {
 
-		ListRoundsResult roundsResult = roundsService.getRounds();
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
-		if (roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
 			setRounds(roundsResult);
 
 			roundsModel = selectModelFactory.create(rounds, "dateString");
 		}
 	}
 
-	void onActivate(String roundNumber) {
+	void onActivate(String country, String season, String roundNumber) {
+		
 		this.roundNumber = Integer.parseInt(roundNumber);
+		this.season = Integer.parseInt(season);
+		otherSeason = (this.season == 2015) ? 2016 : 2015;
+
+		for (Country c : Country.values()) {
+			if (c.name().equals(country)) {
+				this.country = Country.valueOf(country);
+			}
+		}
+		
+		title = Constants.TITLE + " " +  this.country.getString();
 	}
 
-	String onPassivate() {
-		return String.valueOf(roundNumber);
+	List<String> onPassivate() {
+
+		List<String> returnParams = new ArrayList<String>();
+		returnParams.add(country.name());
+		returnParams.add(String.valueOf(season));
+		returnParams.add(String.valueOf(roundNumber));
+
+		return returnParams;
 	}
 
 	void onValidateFromForm() {
@@ -123,12 +163,13 @@ public class Results {
 	void setupRender() {
 
 		loadRiders();
+		hasTotals = rounds.size() > 1;
 	}
 
 	public void afterRender() {
 		String eventURL = refreshZone.getLink().toAbsoluteURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, 5, 100);
+				eventURL, 10, 100);
 	}
 
 	void onRefreshZone() {
@@ -141,14 +182,29 @@ public class Results {
 	}
 
 	private void loadRiders() {
-		ListRoundsResult roundsResult = roundsService.getRounds();
 
-		if (roundsResult.getResultCode() == 200) {
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
+
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
 			setRounds(roundsResult);
 			roundsModel = selectModelFactory.create(rounds, "dateString");
 		}
 
-		ListRidersResult result = riderService.getRiders();
+		ListRidersResult result = null;
+		try {
+			result = riderService.getRiders(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
 		text = result.getText();
 
@@ -202,7 +258,7 @@ public class Results {
 
 		if (rounds != null) {
 
-			if (roundNumber != -1) {
+			if (roundNumber > 0) {
 				round = rounds.get(roundNumber - 1);
 
 			} else {

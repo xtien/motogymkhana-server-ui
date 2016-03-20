@@ -46,7 +46,7 @@ public class HttpClientProvider {
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
 				.<ConnectionSocketFactory> create()
 				.register("http", PlainConnectionSocketFactory.INSTANCE)
-				.register("https", createAdditionalCertsSSLSocketFactory()).build();
+				.register("https", PlainConnectionSocketFactory.INSTANCE).build();
 
 		DnsResolver dnsResolver = new SystemDefaultDnsResolver() {
 
@@ -69,28 +69,5 @@ public class HttpClientProvider {
 				.build();
 
 		return httpclient;
-	}
-
-	protected SSLConnectionSocketFactory createAdditionalCertsSSLSocketFactory() {
-		try {
-
-			final KeyStore ks = KeyStore.getInstance("JKS");
-
-			final InputStream in = new FileInputStream(new File(
-					"/home/christine/gossipServer/pengo.jks"));
-			try {
-				ks.load(in, "smndbvr".toCharArray());
-			} finally {
-				in.close();
-			}
-
-			SSLContext sslContext = SSLContexts.custom()
-					.loadTrustMaterial(ks, new TrustSelfSignedStrategy()).build();
-
-			return new SSLConnectionSocketFactory(sslContext);
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

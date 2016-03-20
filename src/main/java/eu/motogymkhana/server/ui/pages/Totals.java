@@ -21,12 +21,17 @@ import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import eu.motogymkhana.server.api.ListRidersResult;
 import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
+import eu.motogymkhana.server.model.Settings;
 import eu.motogymkhana.server.model.Times;
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
@@ -57,7 +62,7 @@ public class Totals {
 	private Integer roundNumber = -1;
 
 	@Property
-	private String title = "Moto Gymkhana Competition Nederland";
+	private String title = Constants.TITLE;
 
 	@Property
 	private List<Rider> riders = new ArrayList<Rider>();
@@ -92,6 +97,12 @@ public class Totals {
 	@Inject
 	private RidersServiceLocal riderService;
 
+	@Property
+	private int season = 2015;
+
+	@Property
+	private int otherSeason = 2016;
+
 	private int[] points = { 20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 
 	@InjectPage
@@ -99,11 +110,16 @@ public class Totals {
 
 	@InjectPage
 	private Results resultsPage;
-	
+
+	@Property
+	private Country country = Country.NL;
+
+	private Settings settings;
+
 	public void afterRender() {
 		String eventURL = refreshZone.getLink().toAbsoluteURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, 5, 100);
+				eventURL, 10, 100);
 	}
 
 	void onRefreshZone() {
@@ -117,9 +133,16 @@ public class Totals {
 
 	void onPrepare() {
 
-		ListRoundsResult roundsResult = roundsService.getRounds();
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
-		if (roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
 			setRounds(roundsResult);
 			roundsModel = selectModelFactory.create(rounds, "dateString");
 		}
@@ -127,44 +150,66 @@ public class Totals {
 
 	void setupRender() {
 
-		ListRoundsResult roundsResult = roundsService.getRounds();
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
-		if (roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
 			setRounds(roundsResult);
 
 			roundsModel = selectModelFactory.create(rounds, "number");
 		}
 
-		ListRidersResult result = riderService.getRiders();
+		ListRidersResult result = null;
+		try {
+			result = riderService.getRiders(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
 		if (result.getResultCode() == 200) {
+
+			settings = result.getSettings();
 
 			riders.clear();
 
 			if (result.getRiders().size() > 0) {
 
-				for(Rider r : result.getRiders()){
-					if(!r.isDayRider()){
+				for (Rider r : result.getRiders()) {
+					if (!r.isDayRider()) {
 						riders.add(r);
 					}
 				}
 
 				getTotals();
 
-				Collections.sort(riders, new Comparator<Rider>() {
+				if (settings != null && settings.getNumberOfResultsForSeasonResult() != 0) {
 
-					@Override
-					public int compare(Rider lhs, Rider rhs) {
-						return rhs.getTotalPoints() - lhs.getTotalPoints();
-					}
+					Collections.sort(riders, new Comparator<Rider>() {
 
-				});
-				
+						@Override
+						public int compare(Rider lhs, Rider rhs) {
+							return rhs.getTotalPoints(settings.getNumberOfResultsForSeasonResult())
+									- lhs.getTotalPoints(settings
+											.getNumberOfResultsForSeasonResult());
+						}
+
+					});
+				} else {
+					message = "no settings, no proper order of riders";
+				}
+
 				int i = 0;
 				for (Rider rider : riders) {
 					rider.setPosition(++i);
 				}
-
 
 			} else {
 				message = "no riders on server";
@@ -177,12 +222,26 @@ public class Totals {
 		}
 	}
 
-	void onActivate(String roundNumber) {
+	void onActivate(String country, String season, String roundNumber) {
 		this.roundNumber = Integer.parseInt(roundNumber);
+		this.season = Integer.parseInt(season);
+
+		for (Country c : Country.values()) {
+			if (c.name().equals(country)) {
+				this.country = Country.valueOf(country);
+			}
+		}
+		title = Constants.TITLE + " " +  this.country.getString();
 	}
 
-	Integer onPassivate() {
-		return roundNumber;
+	List<String> onPassivate() {
+
+		List<String> returnParams = new ArrayList<String>();
+		returnParams.add(country.name());
+		returnParams.add(String.valueOf(season));
+		returnParams.add(String.valueOf(roundNumber));
+
+		return returnParams;
 	}
 
 	private void setRounds(ListRoundsResult roundsResult) {
@@ -193,7 +252,7 @@ public class Totals {
 
 		if (rounds != null) {
 
-			if (roundNumber != -1) {
+			if (roundNumber > 0) {
 				round = rounds.get(roundNumber - 1);
 
 			} else {
@@ -273,13 +332,20 @@ public class Totals {
 				}
 			}
 		}
-		Collections.sort(riders, new Comparator<Rider>() {
 
-			@Override
-			public int compare(Rider lhs, Rider rhs) {
-				return rhs.getTotalPoints() - lhs.getTotalPoints();
-			}
+		if (settings != null && settings.getNumberOfResultsForSeasonResult() != 0) {
 
-		});
+			Collections.sort(riders, new Comparator<Rider>() {
+
+				@Override
+				public int compare(Rider lhs, Rider rhs) {
+					return rhs.getTotalPoints(settings.getNumberOfResultsForSeasonResult())
+							- lhs.getTotalPoints(settings.getNumberOfResultsForSeasonResult());
+				}
+
+			});
+		} else {
+			message = "no settings, no proper order of riders";
+		}
 	}
 }

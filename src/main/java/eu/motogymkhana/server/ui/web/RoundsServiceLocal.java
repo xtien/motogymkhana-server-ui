@@ -1,6 +1,9 @@
 package eu.motogymkhana.server.ui.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Round;
 
 /**
@@ -9,7 +12,7 @@ import eu.motogymkhana.server.model.Round;
  */
 public interface RoundsServiceLocal extends RoundsServiceRemote {
 
-	ListRoundsResult getRounds();
+	ListRoundsResult getRounds(Country country, int season) throws JsonProcessingException;
 
 	Round getRound(String id);
 }

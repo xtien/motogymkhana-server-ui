@@ -1,19 +1,15 @@
 package eu.motogymkhana.server.ui.api;
 
-import eu.motogymkhana.server.ServerConstants;
-import eu.motogymkhana.server.ui.Constants;
+public interface URLHelper {
 
-public class URLHelper {
+	String getListRidersUrl();
 
-	public static String getListRidersUrl() {
-		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_GET_RIDERS;
-	}
+	String getListRoundsUrl();
 
-	public static String getListRoundsUrl() {
-		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_GET_ROUNDS;
-	}
+	String getRegisterUrl();
 
-	private static String getBaseUrl() {
-		return Constants.DEFAULT_LOCAL_URL + ":" + Constants.DEFAULT_LOCAL_PORT;
-	}
+	String getLoginUrl();
+
+	String getEditProfileUrl();
+
 }

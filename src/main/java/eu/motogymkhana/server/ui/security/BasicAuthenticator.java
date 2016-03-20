@@ -5,6 +5,11 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.Session;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import eu.motogymkhana.server.api.LoginResult;
+import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
+
 /**
  * Basic Security Realm implementation
  * 
@@ -20,13 +25,24 @@ public class BasicAuthenticator implements Authenticator {
 
 	@Property
 	private String message;
+	
+	@Inject
+	private RegisterServiceLocal registerService;
 
 	public void login(String username, String password) throws AuthenticationException {
 
-		if ("admin".equals(username) && "admin".equals(password)) {
-			request.getSession(true).setAttribute(AUTH_TOKEN, new Boolean(true));
-		} else {
-			message = "not logged in";
+		try {
+			LoginResult loginResult = registerService.login(username, password);
+			
+			if (loginResult.getResultCode() == 200 && loginResult.isLoggedIn()) {
+				request.getSession(true).setAttribute(AUTH_TOKEN, new Boolean(true));
+			} else {
+				message = "not logged in";
+			}
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			message = e.getMessage();
 		}
 	}
 

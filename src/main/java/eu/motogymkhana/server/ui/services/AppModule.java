@@ -17,14 +17,19 @@ import org.slf4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import eu.motogymkhana.server.ui.api.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.HttpClientProvider;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.httpClient.impl.MyHttpClientImpl;
 import eu.motogymkhana.server.ui.jackson.ObjectMapperProvider;
 import eu.motogymkhana.server.ui.security.Authenticator;
 import eu.motogymkhana.server.ui.security.BasicAuthenticator;
+import eu.motogymkhana.server.ui.security.RequiresLoginFilter;
+import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.impl.EditProfileServiceImpl;
+import eu.motogymkhana.server.ui.web.impl.RegisterServiceImpl;
 import eu.motogymkhana.server.ui.web.impl.RidersServiceImpl;
 import eu.motogymkhana.server.ui.web.impl.RoundsServiceImpl;
 
@@ -39,6 +44,10 @@ public class AppModule {
 
 		binder.bind(RidersServiceLocal.class, RidersServiceImpl.class);
 		binder.bind(RoundsServiceLocal.class, RoundsServiceImpl.class);
+		binder.bind(RegisterServiceLocal.class, RegisterServiceImpl.class);
+		binder.bind(EditProfileServiceLocal.class, EditProfileServiceImpl.class);
+		
+		binder.bind(URLHelperImpl.class, URLHelperImpl.class);
 
 		binder.bind(MyHttpClient.class, MyHttpClientImpl.class);
 
@@ -55,6 +64,7 @@ public class AppModule {
 
 	public static void contributeComponentRequestHandler(
 			OrderedConfiguration<ComponentRequestFilter> configuration) {
+		configuration.addInstance("RequiresLogin", RequiresLoginFilter.class);
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, Object> configuration) {

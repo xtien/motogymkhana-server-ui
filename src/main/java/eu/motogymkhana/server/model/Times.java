@@ -23,10 +23,17 @@ public class Times {
 	private static final String DISQUALIFIED1 = "dis1";
 	private static final String DISQUALIFIED2 = "dis2";
 	private static final String TIMESTAMP = "timestamp";
+	private static final String COUNTRY = "country";
+	private static final String SEASON = "season";
 
 	@JsonIgnore
 	private volatile int _id;
 
+	@JsonProperty(COUNTRY)
+	private Country country;
+	
+	@JsonProperty(SEASON)
+	private int season;
 
 	@JsonProperty(TIMESTAMP)
 	private long timeStamp;

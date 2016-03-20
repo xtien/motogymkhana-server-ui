@@ -30,11 +30,30 @@ public class Rider {
 	public static final String BIB = "bib";
 	public static final String TEXT = "text";
 	public static final String TIMES = "times";
-	private static final String TIMESTAMP = "timestamp";
-
+	public static final String TIMESTAMP = "timestamp";
+	public static final String SEASON = "season";
+	public static final String BIKE = "bike";
+	public static final String IMAGE_URL = "image_url";
+	public static final String BIKE_IMAGE_URL = "bike_image_url";
+	public static final String NATIONALITY = "nationality";
 
 	@JsonIgnore
 	private int _id;
+
+	@JsonProperty(SEASON)
+	private int season;
+
+	@JsonProperty(NATIONALITY)
+	private Country nationality;
+
+	@JsonProperty(BIKE)
+	private String bike;
+
+	@JsonProperty(IMAGE_URL)
+	private String imageUrl;
+
+	@JsonProperty(BIKE_IMAGE_URL)
+	private String bikeImageUrl;
 
 	@JsonProperty(TIMESTAMP)
 	private long timeStamp;
@@ -72,11 +91,14 @@ public class Rider {
 	@JsonIgnore
 	private List<Times> sortedTimesList = new ArrayList<Times>();
 
+	@JsonIgnore
 	private long date;
 
+	@JsonIgnore
 	private volatile int position;
 
-	private Integer totalPoints;
+	@JsonIgnore
+	public Integer totalPoints;
 
 	public Rider() {
 
@@ -204,10 +226,7 @@ public class Rider {
 			}
 		}
 
-		Times times = new Times(date);
-		timesList.add(times);
-
-		return times;
+		return null;
 	}
 
 	public Collection<Times> getTimes() {
@@ -320,7 +339,7 @@ public class Rider {
 		timesList.add(times);
 	}
 
-	public int getTotalPoints() {
+	public int getTotalPoints(int roundsCountingForSeasonResult) {
 
 		if (totalPoints == null) {
 
@@ -332,7 +351,7 @@ public class Rider {
 
 			Collections.sort(totalPointsList);
 
-			while (totalPointsList.size() > Constants.roundsCountingForSeasonResult) {
+			while (totalPointsList.size() > roundsCountingForSeasonResult) {
 				totalPointsList.remove(0);
 			}
 
@@ -346,8 +365,8 @@ public class Rider {
 		return totalPoints;
 	}
 
-	public String getTotalPointsString() {
-		return Integer.toString(getTotalPoints());
+	public String getTotalPointsString(int roundsCountingForSeasonResult) {
+		return Integer.toString(getTotalPoints(roundsCountingForSeasonResult));
 	}
 
 	public boolean hasTimes() {
@@ -453,5 +472,25 @@ public class Rider {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+	
+	public String getText(){
+		return text;
+	}
+	
+	public String getImageUrl(){
+		return imageUrl;
+	}
+	
+	public String getBikeImageUrl(){
+		return bikeImageUrl;
+	}
+	
+	public String getBike(){
+		return bike;
+	}
+
+	public Country getNationality() {
+		return nationality;
 	}
 }

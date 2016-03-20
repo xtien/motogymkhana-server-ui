@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -18,13 +19,19 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.slf4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.motogymkhana.server.api.ListRidersResult;
 import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.RiderStartNumberComparator;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
+import eu.motogymkhana.server.properties.GymkhanaUIProperties;
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
@@ -55,7 +62,7 @@ public class Index {
 	private Integer roundNumber = -1;
 
 	@Property
-	private String title = "Moto Gymkhana Competition Nederland";
+	private String title = Constants.TITLE;
 
 	@Property
 	private List<Rider> riders = new ArrayList<Rider>();
@@ -82,6 +89,15 @@ public class Index {
 	@Property
 	private SelectModel roundsModel;
 
+	@Property
+	private int season = 2015;
+
+	@Property
+	private int otherSeason = 2016;
+
+	@Property
+	private Country country = Country.NL;
+
 	@Inject
 	private SelectModelFactory selectModelFactory;
 
@@ -92,51 +108,126 @@ public class Index {
 	private RidersServiceLocal riderService;
 
 	@InjectPage
-	private Results resultsPage;
+	private Index indexPage;
 
 	@InjectPage
 	private Totals totalsPage;
-	
-	public void afterRender() {
-		String eventURL = refreshZone.getLink().toURI();
-		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, 5, 100);
-	}
-	
-	void onRefreshZone() {
 
-		setupRender();
+	@Inject
+	private Logger log;
 
-		if (request.isXHR()) {
-			ajaxResponseRenderer.addRender(resultsZone);
-		}
-	}
+	@Property
+	private Boolean hasTotals = true;
 
 	void onPrepare() {
 
-		if (rounds == null || rounds.size() == 0) {
-			ListRoundsResult roundsResult = roundsService.getRounds();
+		log.debug("onPrepare ");
+		log.debug("onPrepare " + country + " " + season);
 
-			if (roundsResult.getResultCode() == 200) {
-				setRounds(roundsResult);
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
-				roundsModel = selectModelFactory.create(rounds, "dateString");
-			}
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
+
+			setRounds(roundsResult);
+
+			roundsModel = selectModelFactory.create(rounds, "dateString");
 		}
 	}
 
+	void onActivate(String country, String season, String roundNumber) {
+
+		log.debug("onActivate " + country + " " + season + " " + roundNumber);
+
+		this.roundNumber = Integer.parseInt(roundNumber);
+		this.season = Integer.parseInt(season);
+		otherSeason = (this.season == 2015) ? 2016 : 2015;
+
+		for (Country c : Country.values()) {
+			if (c.name().equals(country)) {
+				this.country = Country.valueOf(country);
+			}
+		}
+		
+		title = Constants.TITLE + " " +  this.country.getString();
+	}
+
+	List<String> onPassivate() {
+
+		List<String> returnParams = new ArrayList<String>();
+		returnParams.add(country.name());
+		returnParams.add(String.valueOf(season));
+		returnParams.add(String.valueOf(roundNumber));
+
+		return returnParams;
+	}
+
+	void onValidateFromForm() {
+		log.debug("onvalidatefromform " + round);
+		log.debug("onvalidatefromform " + round.getNumber());
+
+		roundNumber = (round == null) ? null : round.getNumber();
+	}
+
 	void setupRender() {
+		loadRiders();
+		hasTotals = rounds.size() > 1;
+	}
 
-		ListRoundsResult roundsResult = roundsService.getRounds();
+	public void afterRender() {
 
-		if (roundsResult.getResultCode() == 200) {
+		int refreshRate = 60;
+
+		GymkhanaUIProperties.init();
+		if (GymkhanaUIProperties.hasProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS)) {
+			String str = GymkhanaUIProperties.getProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS);
+			if (NumberUtils.isNumber(str)) {
+				refreshRate = Integer.parseInt(str);
+			}
+		}
+
+		String eventURL = refreshZone.getLink().toAbsoluteURI();
+		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
+				eventURL, refreshRate, 100);
+	}
+
+	private void loadRiders() {
+
+		ListRoundsResult roundsResult = null;
+		try {
+			roundsResult = roundsService.getRounds(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
+
+		log.debug("roundsResult "
+				+ ((roundsResult == null) ? "null" : (roundsResult.getResultCode())));
+
+		if (roundsResult != null && roundsResult.getResultCode() == 200) {
+			log.debug("roundsResult size" + roundsResult.getRounds().size());
+
 			setRounds(roundsResult);
 			roundsModel = selectModelFactory.create(rounds, "dateString");
 		}
 
-		ListRidersResult result = riderService.getRiders();
+		ListRidersResult result = null;
+		try {
+			result = riderService.getRiders(country, season);
+		} catch (JsonProcessingException e) {
+			message = e.getClass().getSimpleName() + " " + e.getMessage() != null ? e.getMessage()
+					: "";
+			e.printStackTrace();
+		}
 
-		if (result.getResultCode() == 200) {
+		if (result != null && result.getResultCode() == 200) {
 
 			riders.clear();
 
@@ -170,16 +261,13 @@ public class Index {
 		}
 	}
 
-	void onActivate(String roundNumber) {
-		this.roundNumber = Integer.parseInt(roundNumber);
-	}
+	void onRefreshZone() {
 
-	String onPassivate() {
-		return String.valueOf(roundNumber);
-	}
+		loadRiders();
 
-	void onValidateFromForm() {
-		roundNumber = round == null ? null : round.getNumber();
+		if (request.isXHR()) {
+			ajaxResponseRenderer.addRender(resultsZone);
+		}
 	}
 
 	private void setRounds(ListRoundsResult roundsResult) {
@@ -188,11 +276,11 @@ public class Index {
 
 		Collections.sort(rounds, new RoundComparator());
 
-		if (rounds != null) {
+		if (rounds != null && rounds.size() >= roundNumber) {
 
-			if (roundNumber != -1) {
+			if (roundNumber > 0) {
 				round = rounds.get(roundNumber - 1);
-
+				return;
 			} else {
 				for (Round r : rounds) {
 
@@ -204,11 +292,11 @@ public class Index {
 				}
 			}
 
-		} else {
-			rounds = new ArrayList<Round>();
-			round = new Round();
-			roundNumber = 1;
 		}
+
+		rounds = new ArrayList<Round>();
+		round = new Round();
+		roundNumber = 1;
 	}
 
 	public RoundEncoder getRoundEncoder() {

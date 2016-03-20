@@ -1,0 +1,31 @@
+<html t:type="layout" t:title="Gossip Admin Sign In"
+      t:pageTitle="Members login"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+      xmlns:p="tapestry:parameter">
+ 
+ <h2>${title}</h2>
+
+	<form t:type="form" class="full-form" t:id="loginForm">
+		<t:errors />	
+		<table>
+			<tr>
+				<th>
+					<label t:type="label" t:for="username">username:</label>
+				</th>
+				<td>
+					<input t:type="textfield" t:id="username" />
+				</td>	
+			</tr>
+			<tr>
+				<th><label t:type="label" t:for="password">password:</label></th>
+				<td><input type="password" t:type="passwordfield" t:id="password"/></td>
+			</tr>
+		</table>
+		
+		<div class="form-submit">
+			<input type="submit" value="Login" />
+		</div>
+			 
+	</form>
+  
+</html>

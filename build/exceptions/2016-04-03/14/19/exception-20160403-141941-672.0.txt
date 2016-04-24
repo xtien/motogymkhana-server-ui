@@ -1,0 +1,147 @@
+EXCEPTION STACK:
+
+
+     Exception: org.apache.tapestry5.ioc.internal.OperationException
+       Message: Failure parsing template classpath:eu/motogymkhana/server/ui/pages/Results.tml: The content of elements must consist of well-formed character data or markup.
+      location: classpath:eu/motogymkhana/server/ui/pages/Results.tml, line 66
+         trace: Constructing instance of page class eu.motogymkhana.server.ui.pages.Results
+                Creating ComponentAssembler for eu.motogymkhana.server.ui.pages.Results
+                Parsing component template classpath:eu/motogymkhana/server/ui/pages/Results.tml
+
+     Exception: org.apache.tapestry5.ioc.internal.util.TapestryException
+       Message: Failure parsing template classpath:eu/motogymkhana/server/ui/pages/Results.tml: The content of elements must consist of well-formed character data or markup.
+      location: classpath:eu/motogymkhana/server/ui/pages/Results.tml, line 66
+
+     Exception: org.xml.sax.SAXParseException
+       Message: The content of elements must consist of well-formed character data or markup.
+  columnNumber: 24
+    lineNumber: 67
+
+  Stack trace:
+
+  - com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1239)
+  - org.apache.tapestry5.internal.services.XMLTokenStream.parse(XMLTokenStream.java:318)
+  - org.apache.tapestry5.internal.services.SaxTemplateParser.parse(SaxTemplateParser.java:170)
+  - org.apache.tapestry5.internal.services.TemplateParserImpl$1.invoke(TemplateParserImpl.java:61)
+  - org.apache.tapestry5.internal.services.TemplateParserImpl$1.invoke(TemplateParserImpl.java:58)
+  - org.apache.tapestry5.ioc.internal.OperationTrackerImpl.invoke(OperationTrackerImpl.java:82)
+  - org.apache.tapestry5.ioc.internal.PerThreadOperationTracker.invoke(PerThreadOperationTracker.java:72)
+  - org.apache.tapestry5.ioc.internal.RegistryImpl.invoke(RegistryImpl.java:1260)
+  - org.apache.tapestry5.internal.services.TemplateParserImpl.parseTemplate(TemplateParserImpl.java:57)
+  - $TemplateParser_44d92e87ff00a.parseTemplate(Unknown Source)
+  - org.apache.tapestry5.internal.services.ComponentTemplateSourceImpl.parseTemplate(ComponentTemplateSourceImpl.java:190)
+  - org.apache.tapestry5.internal.services.ComponentTemplateSourceImpl.getTemplate(ComponentTemplateSourceImpl.java:162)
+  - $ComponentTemplateSource_44d92e87ff009.getTemplate(Unknown Source)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$4.invoke(PageLoaderImpl.java:258)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$4.invoke(PageLoaderImpl.java:251)
+  - org.apache.tapestry5.ioc.internal.OperationTrackerImpl.invoke(OperationTrackerImpl.java:82)
+  - org.apache.tapestry5.ioc.internal.PerThreadOperationTracker.invoke(PerThreadOperationTracker.java:72)
+  - org.apache.tapestry5.ioc.internal.RegistryImpl.invoke(RegistryImpl.java:1260)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl.createAssembler(PageLoaderImpl.java:250)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl.getAssembler(PageLoaderImpl.java:240)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$3.invoke(PageLoaderImpl.java:195)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl$3.invoke(PageLoaderImpl.java:190)
+  - org.apache.tapestry5.ioc.internal.OperationTrackerImpl.invoke(OperationTrackerImpl.java:82)
+  - org.apache.tapestry5.ioc.internal.PerThreadOperationTracker.invoke(PerThreadOperationTracker.java:72)
+  - org.apache.tapestry5.ioc.internal.RegistryImpl.invoke(RegistryImpl.java:1260)
+  - org.apache.tapestry5.internal.pageload.PageLoaderImpl.loadPage(PageLoaderImpl.java:189)
+  - $PageLoader_44d92e87ff005.loadPage(Unknown Source)
+  - org.apache.tapestry5.internal.services.PageSourceImpl.getPage(PageSourceImpl.java:104)
+  - $PageSource_44d92e87ff004.getPage(Unknown Source)
+  - org.apache.tapestry5.internal.services.RequestPageCacheImpl.get(RequestPageCacheImpl.java:86)
+  - $RequestPageCache_44d92e87ff003.get(Unknown Source)
+  - $RequestPageCache_44d92e87feffa.get(Unknown Source)
+  - org.apache.tapestry5.internal.services.ComponentSourceImpl.getPage(ComponentSourceImpl.java:83)
+  - $ComponentSource_44d92e87fefae.getPage(Unknown Source)
+  - eu.motogymkhana.server.ui.security.RequiresLoginFilter.dispatchedToLoginPage(RequiresLoginFilter.java:62)
+  - eu.motogymkhana.server.ui.security.RequiresLoginFilter.handlePageRender(RequiresLoginFilter.java:49)
+  - $ComponentRequestFilter_44d92e87feff9.handlePageRender(Unknown Source)
+  - $ComponentRequestHandler_44d92e87feffd.handlePageRender(Unknown Source)
+  - $ComponentRequestHandler_44d92e87fefc6.handlePageRender(Unknown Source)
+  - org.apache.tapestry5.internal.services.PageRenderDispatcher.dispatch(PageRenderDispatcher.java:55)
+  - $Dispatcher_44d92e87fefc8.dispatch(Unknown Source)
+  - $Dispatcher_44d92e87fefc0.dispatch(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$RequestHandlerTerminator.service(TapestryModule.java:305)
+  - org.apache.tapestry5.internal.services.RequestErrorFilter.service(RequestErrorFilter.java:26)
+  - $RequestHandler_44d92e87fefc1.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$3.service(TapestryModule.java:846)
+  - $RequestHandler_44d92e87fefc1.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$2.service(TapestryModule.java:836)
+  - $RequestHandler_44d92e87fefc1.service(Unknown Source)
+  - org.apache.tapestry5.internal.services.StaticFilesFilter.service(StaticFilesFilter.java:89)
+  - $RequestHandler_44d92e87fefc1.service(Unknown Source)
+  - eu.motogymkhana.server.ui.services.AppModule$1.service(AppModule.java:133)
+  - $RequestFilter_44d92e87fefbc.service(Unknown Source)
+  - $RequestHandler_44d92e87fefc1.service(Unknown Source)
+  - $RequestHandler_44d92e87fefb6.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$HttpServletRequestHandlerTerminator.service(TapestryModule.java:256)
+  - org.apache.tapestry5.upload.internal.services.MultipartServletRequestFilter.service(MultipartServletRequestFilter.java:45)
+  - $HttpServletRequestHandler_44d92e87fefb8.service(Unknown Source)
+  - org.apache.tapestry5.internal.gzip.GZipFilter.service(GZipFilter.java:59)
+  - $HttpServletRequestHandler_44d92e87fefb8.service(Unknown Source)
+  - org.apache.tapestry5.internal.services.IgnoredPathsFilter.service(IgnoredPathsFilter.java:62)
+  - $HttpServletRequestFilter_44d92e87fefb2.service(Unknown Source)
+  - $HttpServletRequestHandler_44d92e87fefb8.service(Unknown Source)
+  - org.apache.tapestry5.modules.TapestryModule$1.service(TapestryModule.java:796)
+  - $HttpServletRequestHandler_44d92e87fefb8.service(Unknown Source)
+  - $HttpServletRequestHandler_44d92e87fefb1.service(Unknown Source)
+  - org.apache.tapestry5.TapestryFilter.doFilter(TapestryFilter.java:166)
+  - org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1212)
+  - org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:399)
+  - org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+  - org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:182)
+  - org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:766)
+  - org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:450)
+  - org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+  - org.mortbay.jetty.Server.handle(Server.java:326)
+  - org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:542)
+  - org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:928)
+  - org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:549)
+  - org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:212)
+  - org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)
+  - org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:410)
+  - org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+
+REQUEST:
+
+Basic Information:
+
+                contextPath: /mg
+                     method: GET
+                       path: /results/NL/2015/1
+                     locale: en_US
+                 serverName: localhost
+                 remoteHost: 0:0:0:0:0:0:0:1
+
+Headers:
+
+                     Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+            Accept-Encoding: gzip, deflate, sdch
+            Accept-Language: en-US,en;q=0.8
+              Cache-Control: max-age=0
+                 Connection: keep-alive
+                       Host: localhost:8080
+                    Referer: http://localhost:8080/mg/NL/2015/1
+  Upgrade-Insecure-Requests: 1
+                 User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36
+
+SYSTEM INFORMATION:
+
+Memory:
+      200,511,240 bytes free
+      251,133,952 bytes total
+    3,717,201,920 bytes max
+
+12 Threads:
+                                                            Reference Handler WAITING, daemon, priority 10
+                                                                    Finalizer WAITING, daemon, priority 8
+                                                            Signal Dispatcher RUNNABLE, daemon, priority 9
+                                                                         main WAITING
+                                                                     Thread-1 TIMED_WAITING
+                                                                     Thread-2 RUNNABLE
+*                                                 2022351518@qtp-1569683791-0 RUNNABLE
+  1128920667@qtp-1569683791-1 - Acceptor0 SelectChannelConnector@0.0.0.0:8080 RUNNABLE
+                                                                      Timer-0 TIMED_WAITING, daemon
+                                                  1765749413@qtp-1569683791-3 TIMED_WAITING
+                                                   269629011@qtp-1569683791-4 TIMED_WAITING
+                                                  1567197398@qtp-1569683791-5 TIMED_WAITING

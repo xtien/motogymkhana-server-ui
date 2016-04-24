@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import eu.motogymkhana.server.api.ListRidersResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
+import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.api.URLHelper;
 import eu.motogymkhana.server.ui.api.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
@@ -24,15 +27,14 @@ import eu.motogymkhana.server.ui.web.RidersServiceRemote;
 
 public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemote {
 
-	@Inject
-	private Logger logger;
+	private static final Log log = LogFactory.getLog(RidersServiceImpl.class);
 
 	@Inject
 	private MyHttpClient client;
 
 	@Inject
 	private ObjectMapper mapper;
-	
+
 	@Inject
 	private URLHelper urlHelper;
 
@@ -51,11 +53,11 @@ public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemot
 					input);
 
 			result.setResultCode(httpResult.getStatusCode());
-			logger.debug("getRiders " + httpResult.getStatusCode());
+			log.debug("getRiders " + httpResult.getStatusCode());
 
 			if (httpResult.getStatusCode() == 200) {
-				
-				logger.debug("rounds = " + httpResult.getString());
+
+				log.debug("rounds = " + httpResult.getString());
 
 				ListRidersResult ridersResult = mapper.readValue(httpResult.getString(),
 						ListRidersResult.class);

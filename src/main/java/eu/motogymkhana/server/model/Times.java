@@ -1,5 +1,7 @@
 package eu.motogymkhana.server.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,7 +33,7 @@ public class Times {
 
 	@JsonProperty(COUNTRY)
 	private Country country;
-	
+
 	@JsonProperty(SEASON)
 	private int season;
 
@@ -72,6 +74,8 @@ public class Times {
 	private boolean registered = true;
 
 	private int points = 0;
+	private String fontColor = "#000000";
+	private int roundNumber;
 
 	public Times() {
 	}
@@ -123,10 +127,10 @@ public class Times {
 
 		if (!disqualified2 && t2 != 0 && (t2 < t1 || t1 == 0 || disqualified1)) {
 			bestTime = t2;
-			
+
 		} else if (!disqualified1) {
 			bestTime = t1;
-			
+
 		} else {
 			bestTime = 0;
 		}
@@ -266,9 +270,40 @@ public class Times {
 		disqualified1 = times.isDisqualified1();
 		disqualified2 = times.isDisqualified2();
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return Constants.dateFormat.format(date);
+	}
+
+	public void setNewBibColor(long bestTimeInRound, Settings settings, List<Round> rounds) {
+
+		this.roundNumber = getRoundNumberForDate(rounds);
+
+		long myBestTime = getBestTime();
+		if (myBestTime < (bestTimeInRound * settings.getPercentageBlue()) / 100) {
+			fontColor = "#00ccff";
+		} else if (myBestTime < (bestTimeInRound * settings.getPercentageGreen() / 100)) {
+			fontColor = "#34d561";
+		} else {
+			fontColor = "#000000";
+		}
+	}
+
+	private int getRoundNumberForDate(List<Round> rounds) {
+		for (Round r : rounds) {
+			if (r.getDate() == this.date) {
+				return r.getNumber();
+			}
+		}
+		return -1;
+	}
+
+	public String getNewBibColor() {
+		return fontColor;
+	}
+
+	public int getRound() {
+		return roundNumber;
 	}
 }

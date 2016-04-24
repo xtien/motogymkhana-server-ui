@@ -13,7 +13,7 @@
             <div class="form-group">
       <p>
         
-           <span class="dateHeader">2015 Season Totals</span>
+           <span class="dateHeader">${season} Season Totals</span>
       </p>
          </div>
    

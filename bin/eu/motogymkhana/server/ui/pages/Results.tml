@@ -44,7 +44,7 @@
 			<th colspan="2" class='heat-header'>Heat 2</th>
 			<th></th></tr>
 			
-			<tr><th></th><th></th><th></th><th></th><th></th>
+			<tr><th></th><th class='points' >startnr</th><th></th><th></th><th></th>
 			<th class='points' >penalty</th>
 			<th class='points' >time</th>
 			<th class='points' >penalty</th>
@@ -63,7 +63,7 @@
 			<td class='time'> ${rider.time1}</td>
 	        <td class='points'>${rider.penalty2}</td>
 	        <td class='time'> ${rider.time2}</td>
-	  		<td class='time'>${rider.bestTimeString}</td>
+	  		<td class='time'><font color="${rider.newBibColor}">${rider.bestTimeString}</font></td>
 	
 	        </tr>
 			</t:loop>

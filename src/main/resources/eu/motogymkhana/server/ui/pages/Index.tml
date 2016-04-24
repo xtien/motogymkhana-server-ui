@@ -46,7 +46,8 @@
 		<th colspan="2" class='heat-header'>Heat 1</th>
 		<th colspan="2" class='heat-header'>Heat 2</th><th></th><th></th></tr>
 		
-		<tr><th></th>
+		<tr><th class='points'>nr</th>
+		<th class='points'>startnr</th>
 		<th class='points'></th>
 		<th class='points'></th>
 		<th class='points'></th>
@@ -58,6 +59,7 @@
 
        	<t:loop source="riders" value="rider" formState="iteration">
        	<tr>  
+       	<td class='number' bgcolor = '${rider.bibColor}'> 	${rider.riderNumber} </td>
        	<td class='number' bgcolor = '${rider.bibColor}'> 	${rider.startNumber} </td>
        	<td class='points'> 	${rider.nationality} </td>
       	<td class='points'> 	${rider.gender} </td>

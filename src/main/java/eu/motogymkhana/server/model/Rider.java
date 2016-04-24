@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -100,6 +101,12 @@ public class Rider {
 	@JsonIgnore
 	public Integer totalPoints;
 
+	@JsonIgnore
+	private Bib newBibColor = Bib.Y;
+
+	@JsonIgnore
+	private HashMap<Integer, String> sortedBibList = new HashMap<Integer, String>();
+
 	public Rider() {
 
 	}
@@ -136,12 +143,29 @@ public class Rider {
 	@JsonIgnore
 	public String getBibColor() {
 		switch (bib) {
+		case B:
+			return "#00ccff";
 		case G:
 			return "#34d561";
 		case R:
 			return "#ff0404";
 		default:
 			return "#f5fb51";
+		}
+	}
+
+	@JsonIgnore
+	public String getNewBibColor() {
+
+		switch (newBibColor) {
+		case G:
+			return "#34d561";
+		case B:
+			return "#00ccff";
+		case R:
+			return "#ff0404";
+		default:
+			return "#000000";
 		}
 	}
 
@@ -163,6 +187,22 @@ public class Rider {
 		}
 	}
 
+	public String newBibColor(int i) {
+		
+		if(sortedBibList.size() ==0){
+			createSortedBibList();
+		}
+		
+		return sortedBibList.get(i);
+	}
+	
+	private void createSortedBibList() {
+
+		for(Times t : timesList){
+			sortedBibList.put(t.getRound(), t.getNewBibColor());
+		}
+	}
+	
 	private void createSortedTimesList() {
 
 		sortedTimesList.addAll(timesList);
@@ -473,24 +513,33 @@ public class Rider {
 	public void setCountry(Country country) {
 		this.country = country;
 	}
-	
-	public String getText(){
+
+	public String getText() {
 		return text;
 	}
-	
-	public String getImageUrl(){
+
+	public String getImageUrl() {
 		return imageUrl;
 	}
-	
-	public String getBikeImageUrl(){
+
+	public String getBikeImageUrl() {
 		return bikeImageUrl;
 	}
-	
-	public String getBike(){
+
+	public String getBike() {
 		return bike;
 	}
 
 	public Country getNationality() {
 		return nationality;
+	}
+
+	public void setBibPointsColor(long bestTime, Settings settings) {
+		long myBestTime = getBestTime();
+		if (myBestTime <= (bestTime * settings.getPercentageBlue()) / 100) {
+			newBibColor = Bib.B;
+		} else if (myBestTime <= (bestTime * settings.getPercentageGreen()) / 100) {
+			newBibColor = Bib.G;
+		}
 	}
 }

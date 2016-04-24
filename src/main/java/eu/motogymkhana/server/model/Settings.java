@@ -1,5 +1,9 @@
 package eu.motogymkhana.server.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,59 +19,68 @@ public class Settings {
 	public static final String NUMBER_OF_RESULTS_FOR_BIB = "number_of_results_for_bib";
 	public static final String COUNTRY = "country";
 	public static final String SEASON = "season";
+	public static final String POINTS = "points";
+	
+	private String pointsDefault = "20,17,15,13,11,10,9,8,7,6,5,4,3,2,1";
 
-    @JsonProperty(COUNTRY)
-    private Country country;
-    
-    @JsonProperty(SEASON)
-     private int season;
-    
-    @JsonProperty(NUMBER_OF_ROUNDS_COUNT_FOR_TITLE)
-     private int numberOfRoundsCountForTitle;
+	@JsonProperty(COUNTRY)
+	private Country country;
 
-    @JsonProperty(PERCENTAGE_FOR_GREEN_BIB)
-    private int percentageForGreenBib;
+	@JsonProperty(SEASON)
+	private int season;
 
-    @JsonProperty(PERCENTAGE_FOR_BLUE_BIB)
-    private int percentageForBlueBib;
+	@JsonProperty(NUMBER_OF_ROUNDS_COUNT_FOR_TITLE)
+	private int numberOfRoundsCountForTitle;
 
-    @JsonProperty(NUMBER_OF_RESULTS_FOR_SEASON_RESULT)
-    private int numberOfResultsForSeasonResult = 6;
+	@JsonProperty(PERCENTAGE_FOR_GREEN_BIB)
+	private int percentageForGreenBib;
 
-    @JsonProperty(NUMBER_OF_RESULTS_FOR_BIB)
-    private int numberOfResultsForBib =4;
+	@JsonProperty(PERCENTAGE_FOR_BLUE_BIB)
+	private int percentageForBlueBib;
 
-    public int getPercentageBlue() {
-        return percentageForBlueBib;
-    }
+	@JsonProperty(NUMBER_OF_RESULTS_FOR_SEASON_RESULT)
+	private int numberOfResultsForSeasonResult = 6;
 
-    public int getPercentageGreen() {
-        return percentageForGreenBib;
-    }
+	@JsonProperty(NUMBER_OF_RESULTS_FOR_BIB)
+	private int numberOfResultsForBib = 4;
 
-    public int getNumberOfResultsForSeasonResult() {
-        return numberOfResultsForSeasonResult;
-    }
+	@JsonProperty(POINTS)
+	private String points;
 
-    public int getRoundsForBib() {
-        return numberOfResultsForBib;
-    }
+	@JsonIgnore
+	private List<Integer> pointsList;
 
-    public void setPercentageBlue(int s) {
-        percentageForBlueBib = s;
-    }
+	public int getPercentageBlue() {
+		return percentageForBlueBib;
+	}
 
-    public void setPercentageGreen(int s) {
-        percentageForGreenBib = s;
-    }
+	public int getPercentageGreen() {
+		return percentageForGreenBib;
+	}
 
-    public void setNumberOfRoundsForBib(int i) {
-        numberOfResultsForBib = i;
-    }
+	public int getNumberOfResultsForSeasonResult() {
+		return numberOfResultsForSeasonResult;
+	}
 
-    public void setNumberOfRoundsForSeasonResult(int i) {
-        numberOfResultsForSeasonResult = i;
-    }
+	public int getRoundsForBib() {
+		return numberOfResultsForBib;
+	}
+
+	public void setPercentageBlue(int s) {
+		percentageForBlueBib = s;
+	}
+
+	public void setPercentageGreen(int s) {
+		percentageForGreenBib = s;
+	}
+
+	public void setNumberOfRoundsForBib(int i) {
+		numberOfResultsForBib = i;
+	}
+
+	public void setNumberOfRoundsForSeasonResult(int i) {
+		numberOfResultsForSeasonResult = i;
+	}
 
 	public Country getCountry() {
 		return country;
@@ -82,5 +95,22 @@ public class Settings {
 		this.percentageForGreenBib = settings.getPercentageGreen();
 		this.numberOfResultsForBib = settings.getRoundsForBib();
 		this.numberOfResultsForSeasonResult = settings.getNumberOfResultsForSeasonResult();
+	}
+
+	public List<Integer> getPointsList() {
+
+		if (points == null) {
+			points = pointsDefault;
+		}
+
+		if (pointsList == null && points != null && points.length() > 1) {
+			String[] pts = points.split(",");
+			pointsList = new ArrayList<Integer>();
+			for (String pt : pts) {
+				pointsList.add(Integer.parseInt(pt));
+			}
+		}
+
+		return pointsList;
 	}
 }

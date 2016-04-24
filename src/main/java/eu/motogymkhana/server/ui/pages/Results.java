@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -28,6 +29,8 @@ import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.RiderBestTimeComparator;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
+import eu.motogymkhana.server.model.Settings;
+import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
@@ -132,7 +135,7 @@ public class Results {
 	}
 
 	void onActivate(String country, String season, String roundNumber) {
-		
+
 		this.roundNumber = Integer.parseInt(roundNumber);
 		this.season = Integer.parseInt(season);
 		otherSeason = (this.season == 2015) ? 2016 : 2015;
@@ -142,8 +145,8 @@ public class Results {
 				this.country = Country.valueOf(country);
 			}
 		}
-		
-		title = Constants.TITLE + " " +  this.country.getString();
+
+		title = Constants.TITLE + " " + this.country.getString();
 	}
 
 	List<String> onPassivate() {
@@ -167,9 +170,18 @@ public class Results {
 	}
 
 	public void afterRender() {
+		int refreshRate = 60;
+
+		GymkhanaUIProperties.init();
+		if (GymkhanaUIProperties.hasProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS)) {
+			String str = GymkhanaUIProperties.getProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS);
+			if (NumberUtils.isNumber(str)) {
+				refreshRate = Integer.parseInt(str);
+			}
+		}
 		String eventURL = refreshZone.getLink().toAbsoluteURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, 10, 100);
+				eventURL, refreshRate, 100);
 	}
 
 	void onRefreshZone() {
@@ -210,6 +222,8 @@ public class Results {
 
 		if (result.getResultCode() == 200) {
 
+			Settings settings = result.getSettings();
+
 			riders.clear();
 
 			if (text != null) {
@@ -235,8 +249,13 @@ public class Results {
 					Collections.sort(riders, new RiderBestTimeComparator());
 				}
 
-				for (Rider rider : riders) {
-					rider.setPosition(++i);
+				if (riders.size() > 0) {
+					long bestTime = riders.get(0).getBestTime();
+
+					for (Rider rider : riders) {
+						rider.setPosition(++i);
+						rider.setBibPointsColor(bestTime, settings);
+					}
 				}
 
 			} else {

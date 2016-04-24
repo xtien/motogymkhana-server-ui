@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.tapestry5.ComponentResources;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.annotations.InjectComponent;
@@ -31,6 +32,7 @@ import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
 import eu.motogymkhana.server.model.Settings;
 import eu.motogymkhana.server.model.Times;
+import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
@@ -98,12 +100,12 @@ public class Totals {
 	private RidersServiceLocal riderService;
 
 	@Property
-	private int season = 2015;
+	private int season = 2016;
 
 	@Property
-	private int otherSeason = 2016;
-
-	private int[] points = { 20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+	private int otherSeason = 2015;
+	
+	private List<Integer> points;
 
 	@InjectPage
 	private Index indexPage;
@@ -117,9 +119,18 @@ public class Totals {
 	private Settings settings;
 
 	public void afterRender() {
+		int refreshRate = 60;
+
+		GymkhanaUIProperties.init();
+		if (GymkhanaUIProperties.hasProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS)) {
+			String str = GymkhanaUIProperties.getProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS);
+			if (NumberUtils.isNumber(str)) {
+				refreshRate = Integer.parseInt(str);
+			}
+		}
 		String eventURL = refreshZone.getLink().toAbsoluteURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, 10, 100);
+				eventURL, refreshRate, 100);
 	}
 
 	void onRefreshZone() {
@@ -177,6 +188,7 @@ public class Totals {
 		if (result.getResultCode() == 200) {
 
 			settings = result.getSettings();
+			points = settings.getPointsList();
 
 			riders.clear();
 
@@ -225,13 +237,14 @@ public class Totals {
 	void onActivate(String country, String season, String roundNumber) {
 		this.roundNumber = Integer.parseInt(roundNumber);
 		this.season = Integer.parseInt(season);
+		otherSeason = (this.season == 2015) ? 2016 : 2015;
 
 		for (Country c : Country.values()) {
 			if (c.name().equals(country)) {
 				this.country = Country.valueOf(country);
 			}
 		}
-		title = Constants.TITLE + " " +  this.country.getString();
+		title = Constants.TITLE + " " + this.country.getString();
 	}
 
 	List<String> onPassivate() {
@@ -324,9 +337,9 @@ public class Totals {
 
 			int pointsPointer = 0;
 			for (Times times : list) {
-				if (times.getBestTime() > 0 && pointsPointer < points.length) {
+				if (times.getBestTime() > 0 && pointsPointer < points.size()) {
 
-					int p = points[pointsPointer++];
+					int p = points.get(pointsPointer++);
 
 					times.setPoints(p);
 				}

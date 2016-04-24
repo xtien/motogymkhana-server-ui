@@ -27,6 +27,7 @@ import eu.motogymkhana.server.api.ListRidersResult;
 import eu.motogymkhana.server.api.ListRoundsResult;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
+import eu.motogymkhana.server.model.RiderNumberComparator;
 import eu.motogymkhana.server.model.RiderStartNumberComparator;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
@@ -90,10 +91,10 @@ public class Index {
 	private SelectModel roundsModel;
 
 	@Property
-	private int season = 2015;
+	private int season = 2016;
 
 	@Property
-	private int otherSeason = 2016;
+	private int otherSeason = 2015;
 
 	@Property
 	private Country country = Country.NL;
@@ -154,8 +155,8 @@ public class Index {
 				this.country = Country.valueOf(country);
 			}
 		}
-		
-		title = Constants.TITLE + " " +  this.country.getString();
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
 	}
 
 	List<String> onPassivate() {
@@ -177,7 +178,7 @@ public class Index {
 
 	void setupRender() {
 		loadRiders();
-		hasTotals = rounds.size() > 1;
+		hasTotals = rounds !=null && rounds.size() > 1;
 	}
 
 	public void afterRender() {
@@ -282,16 +283,21 @@ public class Index {
 				round = rounds.get(roundNumber - 1);
 				return;
 			} else {
-				for (Round r : rounds) {
 
-					if (r.isCurrent()) {
-						round = r;
-						roundNumber = r.getNumber();
-						return;
+				long now = System.currentTimeMillis();
+				Round r = null;
+				long oneWeek = 7 * 24 * 3600 * 1000l;
+
+				for (Round rr : rounds) {
+					if (r == null || ((rr.getDate() > now - oneWeek)
+							&& rr.getDate() < r.getDate())) {
+						r = rr;
 					}
 				}
+				round = r;
+				roundNumber = r.getNumber();
+				return;
 			}
-
 		}
 
 		rounds = new ArrayList<Round>();

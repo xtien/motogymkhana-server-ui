@@ -90,10 +90,10 @@ public class Results {
 	private SelectModel roundsModel;
 
 	@Property
-	private int season = 2015;
+	private int season = 2016;
 
 	@Property
-	private int otherSeason = 2016;
+	private int otherSeason = 2015;
 
 	@Property
 	private Country country = Country.NL;
@@ -170,7 +170,7 @@ public class Results {
 	}
 
 	public void afterRender() {
-		int refreshRate = 60;
+		int refreshRate = 20;
 
 		GymkhanaUIProperties.init();
 		if (GymkhanaUIProperties.hasProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS)) {

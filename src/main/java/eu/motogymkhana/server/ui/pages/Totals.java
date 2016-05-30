@@ -119,7 +119,7 @@ public class Totals {
 	private Settings settings;
 
 	public void afterRender() {
-		int refreshRate = 60;
+		int refreshRate = 20;
 
 		GymkhanaUIProperties.init();
 		if (GymkhanaUIProperties.hasProperty(GymkhanaUIProperties.GUI_REFRESH_SECONDS)) {

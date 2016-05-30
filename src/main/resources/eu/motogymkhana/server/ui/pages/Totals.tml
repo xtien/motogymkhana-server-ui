@@ -53,7 +53,7 @@
        	<td class='points' bgcolor = '${rider.bibColor}'> 		${rider.position} </td>
       	<td class='points'> 		${rider.country} </td>
       	<td class='points'> 		${rider.gender} </td>
-       	<td class='name'> 			<t:pagelink page="riderPage" context="rider.fullName" class="links">	 ${rider.fullName}</t:pagelink></td>   
+       	<td class='name'> 			${rider.fullName}</td>   
        	<td class='points'> 		${rider.points(0)} </td>
       	<td class='points'> 		${rider.points(1)} </td>
      	<td class='points'> 		${rider.points(2)} </td>

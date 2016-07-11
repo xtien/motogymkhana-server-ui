@@ -7,6 +7,8 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.pages;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -30,11 +32,10 @@ import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.ListRidersResult;
-import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.api.result.ListRidersResult;
+import eu.motogymkhana.server.api.result.ListRoundsResult;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
-import eu.motogymkhana.server.model.RiderNumberComparator;
 import eu.motogymkhana.server.model.RiderStartNumberComparator;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.model.RoundComparator;
@@ -48,6 +49,8 @@ import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
  * Start page of application MotoGymkhana UI.
  */
 public class Index {
+
+	private static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 
 	@InjectComponent
 	private Zone resultsZone;
@@ -149,26 +152,21 @@ public class Index {
 		}
 	}
 
-	void onActivate(String country, String season, String roundNumber) {
+	void onActivate(String countryString, int season, int roundNumber) {
 
-		log.debug("onActivate " + country + " " + season + " " + roundNumber);
+		log.debug("onActivate " + countryString + " " + season + " " + roundNumber);
 
-		this.roundNumber = Integer.parseInt(roundNumber);
-		this.season = Integer.parseInt(season);
+		this.roundNumber = roundNumber;
+		this.season = season;
 		otherSeason = (this.season == 2015) ? 2016 : 2015;
-
-		for (Country c : Country.values()) {
-			if (c.name().equals(country)) {
-				this.country = Country.valueOf(country);
-			}
-		}
+		country = Country.valueOf(countryString);
 
 		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
 	}
 
 	List<String> onPassivate() {
 
-		List<String> returnParams = new ArrayList<String>();
+		List returnParams = new ArrayList();
 		returnParams.add(country.name());
 		returnParams.add(String.valueOf(season));
 		returnParams.add(String.valueOf(roundNumber));
@@ -177,15 +175,12 @@ public class Index {
 	}
 
 	void onValidateFromForm() {
-		log.debug("onvalidatefromform " + round);
-		log.debug("onvalidatefromform " + round.getNumber());
-
 		roundNumber = (round == null) ? null : round.getNumber();
 	}
 
 	void setupRender() {
 		loadRiders();
-		hasTotals = rounds !=null && rounds.size() > 1;
+		hasTotals = rounds != null && rounds.size() > 1;
 	}
 
 	public void afterRender() {
@@ -293,11 +288,12 @@ public class Index {
 
 				long now = System.currentTimeMillis();
 				Round r = null;
-				long oneWeek = 7 * 24 * 3600 * 1000l;
+				long nowPlusTwoDays = now + 2 * 24 * 3600 * 1000l;
 
 				for (Round rr : rounds) {
-					if (r == null || ((rr.getDate() > now - oneWeek)
-							&& rr.getDate() < r.getDate())) {
+					boolean later = r == null || rr.getDate() > r.getDate();
+					boolean inPast = rr.getDate() < nowPlusTwoDays;
+					if (later && inPast) {
 						r = rr;
 					}
 				}

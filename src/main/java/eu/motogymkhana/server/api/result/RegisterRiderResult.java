@@ -5,17 +5,12 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.api;
+package eu.motogymkhana.server.api.result;
 
-import eu.motogymkhana.server.model.Country;
-import eu.motogymkhana.server.model.Rider;
 
-public class EditProfileRequest extends GymkhanaRequest {
+public class RegisterRiderResult  extends GymkhanaResult{
+	
+	public static final int OK = 0;
+	public static final int NOT_OK = -1;
 
-	public EditProfileRequest(Country country, int season) {
-		this.country = country;
-		this.season = season;
-	}
-
-	private Rider rider;
 }

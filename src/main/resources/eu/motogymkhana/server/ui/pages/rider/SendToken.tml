@@ -1,14 +1,12 @@
-<html t:type="layout" t:title="Sign In"
+<html t:type="layout" t:title="Motogymkhana Sign In"
       t:pageTitle="Members login"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
       xmlns:p="tapestry:parameter">
  
  <h2>${title}</h2>
-
-<p>
-	<t:pagelink page="rider/register" class="links" context="[country, season]" >Create account</t:pagelink>
-</p>
-	<form t:type="form" class="full-form" t:id="loginForm" t:context="username">
+<p>${message}</p>
+<BR></BR><BR></BR>
+	<form t:type="form" class="full-form" t:id="registerForm">
 		<t:errors />	
 		<table>
 			<tr>
@@ -19,14 +17,22 @@
 					<input t:type="textfield" t:id="username" />
 				</td>	
 			</tr>
-			<tr>
+		<tr>
+				<th><label t:type="label" t:for="token">token:</label></th>
+				<td><input t:type="textfield" t:id="token"/></td>
+			</tr>
+				<tr>
 				<th><label t:type="label" t:for="password">password:</label></th>
 				<td><input type="password" t:type="passwordfield" t:id="password"/></td>
+			</tr>
+			<tr>
+				<th><label t:type="label" t:for="password">password repeat:</label></th>
+				<td><input type="password" t:type="passwordfield" t:id="passwordRepeat"/></td>
 			</tr>
 		</table>
 		
 		<div class="form-submit">
-			<input type="submit" value="Login" />
+			<input type="submit" value="Register" />
 		</div>
 			 
 	</form>

@@ -18,5 +18,10 @@ public interface URLHelper {
 	String getLoginUrl();
 
 	String getEditProfileUrl();
+	
+	String getSendTokenUrl();
 
+	String getUpdateRiderUrl();
+
+	String getGetRiderUrl();
 }

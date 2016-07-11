@@ -5,8 +5,17 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.api;
+package eu.motogymkhana.server.api.request;
 
-public class RegisterResult  extends GymkhanaResult{
+import eu.motogymkhana.server.model.Country;
 
+public class RegisterRequest extends GymkhanaRequest{
+
+	private String email;
+
+	public RegisterRequest(String email,Country country, int season) {
+		this.email = email;
+		this.country = country;
+		this.season = season;
+	}
 }

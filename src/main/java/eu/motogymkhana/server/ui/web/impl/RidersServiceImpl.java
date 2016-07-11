@@ -15,19 +15,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eu.motogymkhana.server.api.GymkhanaRequest;
-import eu.motogymkhana.server.api.ListRidersResult;
+import eu.motogymkhana.server.api.request.GetRiderRequest;
+import eu.motogymkhana.server.api.request.GymkhanaRequest;
+import eu.motogymkhana.server.api.request.UpdateRiderRequest;
+import eu.motogymkhana.server.api.response.GetRiderResponse;
+import eu.motogymkhana.server.api.response.UpdateRiderResponse;
+import eu.motogymkhana.server.api.result.ListRidersResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
-import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.api.URLHelper;
-import eu.motogymkhana.server.ui.api.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 import eu.motogymkhana.server.ui.web.RidersServiceRemote;
@@ -100,14 +101,69 @@ public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemot
 	}
 
 	@Override
-	public Rider getRider(String riderName) {
+	public Rider getRider(int riderNumber) {
 
-		for (Rider rider : riders) {
-			if (rider.getFullName().equals(riderName)) {
-				return rider;
+		if (riders == null) {
+			try {
+				Thread.sleep(1000l);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
+
+		if (riders != null) {
+			for (Rider rider : riders) {
+				if (rider.getRiderNumber() == riderNumber) {
+					return rider;
+				}
+			}
+		}
+
 		return null;
 	}
 
+	@Override
+	public Rider getRider(String email, String password, Country country, int season) throws JsonProcessingException {
+
+		GetRiderRequest request = new GetRiderRequest(email,password, country, season);
+		String input = mapper.writeValueAsString(request);
+
+		try {
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getGetRiderUrl(),
+					input);
+
+			GetRiderResponse response = mapper.readValue(httpResult.getString(),
+					GetRiderResponse.class);
+
+			if (response.isOK()) {
+				return response.getRider();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public UpdateRiderResponse updateRider(Rider rider, String email, String password)
+			throws JsonProcessingException {
+
+		UpdateRiderResponse response = new UpdateRiderResponse();
+		UpdateRiderRequest request = new UpdateRiderRequest(rider, email,password);
+		String input = mapper.writeValueAsString(request);
+
+		try {
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getUpdateRiderUrl(),
+					input);
+
+			response = mapper.readValue(httpResult.getString(), UpdateRiderResponse.class);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return response;
+	}
 }

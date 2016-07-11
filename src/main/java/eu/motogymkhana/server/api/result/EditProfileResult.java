@@ -5,15 +5,19 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.api;
+package eu.motogymkhana.server.api.result;
 
-public class LoginRequest extends GymkhanaRequest{
+import eu.motogymkhana.server.model.Rider;
 
-	private String userName;
+public class EditProfileResult extends GymkhanaResult{
 
-	public LoginRequest(String userName, String pw) {
-		this.userName = userName;
-		this.password = pw;
+	private Rider rider;
+
+	public Rider getRider() {
+		return rider;
 	}
 
+	public void setRider(Rider rider) {
+		this.rider = rider;
+	}
 }

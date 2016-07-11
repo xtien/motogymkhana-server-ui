@@ -7,6 +7,8 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.jackson;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,6 +27,8 @@ public class ObjectMapperProvider {
 	};
 
 	public ObjectMapper get() {
+		mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+		mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 		return mapper;
 	}
 }

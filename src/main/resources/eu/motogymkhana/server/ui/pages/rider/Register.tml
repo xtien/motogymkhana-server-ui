@@ -1,29 +1,28 @@
-<html t:type="layout" t:title="Gossip Admin Sign In"
+<html t:type="layout" t:title="Motogymkhana Sign In"
       t:pageTitle="Members login"
       xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
       xmlns:p="tapestry:parameter">
  
  <h2>${title}</h2>
-<p>${message} ${text}</p>
-
+<p>${message}</p>
+<BR></BR><BR></BR>
 	<form t:type="form" class="full-form" t:id="registerForm">
 		<t:errors />	
+		
+		<p>In order to create an account on this server, please provide the email address that
+		you are registered with in the Motogymkhana competition. If we have the email address that
+		you provide on file, you will receive further instructions by email.
+		
+		
+		</p>
 		<table>
 			<tr>
 				<th>
-					<label t:type="label" t:for="username">username:</label>
+					<label t:type="label" t:for="username">Email:</label>
 				</th>
 				<td>
 					<input t:type="textfield" t:id="username" />
 				</td>	
-			</tr>
-			<tr>
-				<th><label t:type="label" t:for="password">password:</label></th>
-				<td><input type="password" t:type="passwordfield" t:id="password"/></td>
-			</tr>
-			<tr>
-				<th><label t:type="label" t:for="password">password repeat:</label></th>
-				<td><input type="password" t:type="passwordfield" t:id="passwordRepeat"/></td>
 			</tr>
 		</table>
 		

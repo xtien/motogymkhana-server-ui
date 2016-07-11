@@ -72,7 +72,7 @@ public class RequiresLoginFilter implements ComponentRequestFilter {
 			return false;
 		}
 
-		Link link = renderLinkSource.createPageRenderLink("admin/Signin");
+		Link link = renderLinkSource.createPageRenderLink("rider/Signin");
 
 		response.sendRedirect(link);
 

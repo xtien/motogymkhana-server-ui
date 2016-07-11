@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eu.motogymkhana.server.ui.api.URLHelperImpl;
+import eu.motogymkhana.server.ui.api.impl.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.HttpClientProvider;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.httpClient.impl.MyHttpClientImpl;

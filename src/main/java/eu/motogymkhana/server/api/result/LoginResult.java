@@ -5,16 +5,13 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.api;
+package eu.motogymkhana.server.api.result;
 
-public class RegisterRequest extends GymkhanaRequest{
+public class LoginResult extends GymkhanaResult{
 
-	private String userName;
-	private String passwordRepeat;
+	private boolean loggedIn;
 
-	public RegisterRequest(String userName, String pw, String pwRep) {
-		this.userName = userName;
-		this.password = pw;
-		this.passwordRepeat = pwRep;
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 }

@@ -15,14 +15,14 @@ import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
 
 public class RiderPage {
-	
-	private String riderName;
+
+	private int riderNumber;
 
 	@Property
 	private String text = "";
 
 	@Property
-	private String title = Constants.TITLE;
+	private String title = Constants.PROFILE_TITLE;
 
 	@Property
 	private String message;
@@ -35,14 +35,21 @@ public class RiderPage {
 
 	@Inject
 	private RidersServiceLocal riderService;
-	
-	void onActivate(String riderName) {
-		this.riderName = riderName;
-	}
-	
-	void setupRender() {
-		
-		rider = riderService.getRider(riderName);	
+
+	void onActivate(String countryString, int season, String email, String password, int riderNumber) {
+		this.riderNumber = riderNumber;
 	}
 
+	void onActivate(int riderNumber) {
+		this.riderNumber = riderNumber;
+	}
+
+	void setupRender() {
+		rider = riderService.getRider(riderNumber);
+		title = Constants.PROFILE_TITLE + " " + rider.getFullName();
+		if (rider == null) {
+			rider = new Rider();
+			text = "Rider not found";
+		}
+	}
 }

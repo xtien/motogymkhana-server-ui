@@ -7,14 +7,22 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.pages.rider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Log;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
+import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.slf4j.Logger;
 
+import eu.motogymkhana.server.model.Country;
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.annotations.AnonymousAccess;
 import eu.motogymkhana.server.ui.pages.Index;
 import eu.motogymkhana.server.ui.security.AuthenticationException;
@@ -29,10 +37,14 @@ public class Signin {
 	@Property
 	private String flashmessage;
 
+	@Persist
 	@Property
+	@Validate("required")
 	private String username;
 
+	@Persist
 	@Property
+	@Validate("required")
 	private String password;
 
 	@Inject
@@ -46,19 +58,37 @@ public class Signin {
 
 	@InjectPage
 	private Index index;
-	
+
 	@InjectPage
 	private Profile profilePage;
 
+	@Inject
+	private Logger log;
+
+	@Property
+	@Persist
+	private int season;
+
+	@Property
+	@Persist
+	private Country country;
+
+	@Property
+	@Persist
+	private int roundNumber;
+
 	@Log
 	public Object onSubmitFromLoginForm() {
+		
 		try {
 			authenticator.login(username, password);
 		} catch (AuthenticationException ex) {
-			loginForm.recordError(messages.get("error.login"));
+			loginForm.recordError("error signing in: wrong email and/or password");
 			return null;
 		}
 
+		profilePage.onActivate(country.name(), season, username, password,
+				roundNumber);
 		return profilePage;
 	}
 
@@ -70,4 +100,31 @@ public class Signin {
 		this.flashmessage = flashmessage;
 	}
 
+	void onActivate(String countryString, int season) {
+
+		this.season = season;
+		country = Country.valueOf(countryString);
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	void onActivate(String countryString, int season, int roundNumber) {
+
+		this.roundNumber = roundNumber;
+		this.season = season;
+		country = Country.valueOf(countryString);
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	List<String> onPassivate() {
+
+		List returnParams = new ArrayList();
+		if (country == null) {
+			country = Country.NL;
+		}
+		returnParams.add(country.name());
+		returnParams.add(season);
+		returnParams.add(roundNumber);
+
+		return returnParams;
+	}
 }

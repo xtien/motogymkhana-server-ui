@@ -20,13 +20,13 @@ import org.slf4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eu.motogymkhana.server.api.GymkhanaRequest;
-import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.api.request.GymkhanaRequest;
+import eu.motogymkhana.server.api.result.ListRoundsResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.ui.api.URLHelper;
-import eu.motogymkhana.server.ui.api.URLHelperImpl;
+import eu.motogymkhana.server.ui.api.impl.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceRemote;

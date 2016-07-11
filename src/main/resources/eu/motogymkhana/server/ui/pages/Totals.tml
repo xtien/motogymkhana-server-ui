@@ -21,8 +21,8 @@
        </div>
 </td><td>
 <p>
-     <t:pagelink page="index" context="round.number" class="links">Start List</t:pagelink>
-     <t:pagelink page="results" context="round.number" class="links">Results</t:pagelink>
+     <t:pagelink page="index" context="[country, season, round.number]" class="links">Start List</t:pagelink>
+     <t:pagelink page="results" context="[country, season, round.number]" class="links">Results</t:pagelink>
 	 <t:pagelink page="index"  context="[country, otherSeason, round.number]" class="links">${otherSeason}</t:pagelink>
 </p>
 </td></tr></table>
@@ -53,7 +53,7 @@
        	<td class='points' bgcolor = '${rider.bibColor}'> 		${rider.position} </td>
       	<td class='points'> 		${rider.country} </td>
       	<td class='points'> 		${rider.gender} </td>
-       	<td class='name'> 			${rider.fullName}</td>   
+       	<td class='table-text'> <t:pagelink page="riderPage" context="rider.riderNumber" class="links">	${rider.fullName}</t:pagelink></td>   
        	<td class='points'> 		${rider.points(0)} </td>
       	<td class='points'> 		${rider.points(1)} </td>
      	<td class='points'> 		${rider.points(2)} </td>

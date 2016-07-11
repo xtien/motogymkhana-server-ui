@@ -195,21 +195,21 @@ public class Rider {
 	}
 
 	public String newBibColor(int i) {
-		
-		if(sortedBibList.size() ==0){
+
+		if (sortedBibList.size() == 0) {
 			createSortedBibList();
 		}
-		
+
 		return sortedBibList.get(i);
 	}
-	
+
 	private void createSortedBibList() {
 
-		for(Times t : timesList){
+		for (Times t : timesList) {
 			sortedBibList.put(t.getRound(), t.getNewBibColor());
 		}
 	}
-	
+
 	private void createSortedTimesList() {
 
 		sortedTimesList.addAll(timesList);
@@ -283,7 +283,7 @@ public class Rider {
 	public boolean hasEUTimes() {
 
 		Times euTimes = getEUTimes();
-		return euTimes != null && !(euTimes.isDisqualified1() && euTimes.isDisqualified2())
+		return euTimes != null && euTimes.isRegistered() && !(euTimes.isDisqualified1() && euTimes.isDisqualified2())
 				&& euTimes.getBestTime() > 0;
 	}
 
@@ -482,6 +482,12 @@ public class Rider {
 		lastName = rider.getLastName();
 		riderNumber = rider.getRiderNumber();
 		dayRider = rider.isDayRider();
+		if (rider.hasText()) {
+			text = rider.getText();
+		}
+		if (rider.hasBike()) {
+			bike = rider.getBike();
+		}
 
 		for (Times tRider : rider.getTimes()) {
 
@@ -495,6 +501,14 @@ public class Rider {
 				timesList.add(tRider);
 			}
 		}
+	}
+
+	private boolean hasText() {
+		return text != null;
+	}
+	
+	private boolean hasBike() {
+		return bike != null;
 	}
 
 	@Override
@@ -515,6 +529,10 @@ public class Rider {
 
 	public Country getCountry() {
 		return country;
+	}
+
+	public int getSeason() {
+		return season;
 	}
 
 	public void setCountry(Country country) {
@@ -548,5 +566,21 @@ public class Rider {
 		} else if (myBestTime <= (bestTime * settings.getPercentageGreen()) / 100) {
 			newBibColor = Bib.G;
 		}
+	}
+
+	public void setImageUrl(String string) {
+		imageUrl = string;
+	}
+
+	public void setBikeImageUrl(String string) {
+		bikeImageUrl = string;
+	}
+
+	public void setText(String riderText) {
+		this.text = riderText;
+	}
+
+	public void setBike(String riderBike) {
+		this.bike = riderBike;
 	}
 }

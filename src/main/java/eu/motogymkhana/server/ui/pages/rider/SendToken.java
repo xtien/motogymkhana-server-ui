@@ -10,42 +10,45 @@ package eu.motogymkhana.server.ui.pages.rider;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Log;
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.motogymkhana.server.api.result.RegisterRiderResult;
-import eu.motogymkhana.server.model.Country;
-import eu.motogymkhana.server.ui.Constants;
+import eu.motogymkhana.server.api.result.TokenResult;
 import eu.motogymkhana.server.ui.annotations.AnonymousAccess;
 import eu.motogymkhana.server.ui.pages.Index;
 import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
 
 @AnonymousAccess
-public class Register {
+public class SendToken {
 
 	@Property
-	private String title = "Register";
-	
-	@Property
-	private String text = "";
+	private String title = "Token Registration";
 
 	@Property
 	private String flashmessage;
 
 	@Property
 	private String username;
-	
+
 	@Property
 	private String password;
 
+	@Property
+	private String passwordRepeat;
+
 	@Component
 	private Form registerForm;
+
+	@Property
+	private String text;
+
+	@Property
+	private String token;
 
 	@Inject
 	private Messages messages;
@@ -64,24 +67,17 @@ public class Register {
 	@InjectPage
 	private Signin loginPage;
 
-	@Inject
-	private Logger log;
-
-	@Persist
-	private int season;
-
-	@Persist
-	private Country country;
-
 	@Log
 	public Object onSubmitFromRegisterForm() {
 
-		if (username.length() >= minimumPasswordLength) {
+		if (username.length() >= minimumPasswordLength
+				&& password.length() >= minimumPasswordLength && passwordRepeat.length() > 5
+				&& password.equals(passwordRepeat)) {
 
 			try {
-				RegisterRiderResult result = registerService.register(username,country,season);
+				TokenResult result = registerService.sendToken(username, password, token);
 
-				if (result.getResultCode() == 200) {
+				if (result.getResultCode() == 0) {
 					message = "register ok";
 					return loginPage;
 
@@ -94,20 +90,17 @@ public class Register {
 			}
 
 		} else {
-			message = "user name too short";
+			if (username.length() < minimumPasswordLength) {
+				message = "user name too short";
+			} else if (password.length() < minimumPasswordLength
+					|| passwordRepeat.length() < minimumPasswordLength) {
+				message = "password too short";
+			} else {
+				message = "passwords don't match";
+			}
 		}
 
 		return this;
-	}
-	
-	void onActivate(String countryString, int season) {
-
-		log.debug("onActivate " + countryString + " " + season);
-
-		this.season =season;
-		country = Country.valueOf(countryString);
-
-		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
 	}
 
 	public String getFlashMessage() {
@@ -117,4 +110,13 @@ public class Register {
 	public void setFlashMessage(String flashmessage) {
 		this.flashmessage = flashmessage;
 	}
+
+	void onActivate(String token) {
+		this.token = token;
+	}
+
+	void onPassivate() {
+
+	}
+
 }

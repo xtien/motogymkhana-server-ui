@@ -31,8 +31,8 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.ListRidersResult;
-import eu.motogymkhana.server.api.ListRoundsResult;
+import eu.motogymkhana.server.api.result.ListRidersResult;
+import eu.motogymkhana.server.api.result.ListRoundsResult;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.Round;
@@ -241,16 +241,11 @@ public class Totals {
 		}
 	}
 
-	void onActivate(String country, String season, String roundNumber) {
-		this.roundNumber = Integer.parseInt(roundNumber);
-		this.season = Integer.parseInt(season);
+	void onActivate(String countryString, int season, int roundNumber) {
+		this.roundNumber = roundNumber;
+		this.season = season;
 		otherSeason = (this.season == 2015) ? 2016 : 2015;
-
-		for (Country c : Country.values()) {
-			if (c.name().equals(country)) {
-				this.country = Country.valueOf(country);
-			}
-		}
+		country = Country.valueOf(countryString);
 		title = Constants.TITLE + " " + this.country.getString();
 	}
 
@@ -270,25 +265,33 @@ public class Totals {
 
 		Collections.sort(rounds, new RoundComparator());
 
-		if (rounds != null) {
+		if (rounds != null && rounds.size() >= roundNumber) {
 
 			if (roundNumber > 0) {
 				round = rounds.get(roundNumber - 1);
-
+				return;
 			} else {
-				for (Round r : rounds) {
 
-					if (r.isCurrent()) {
-						round = r;
-						roundNumber = r.getNumber();
+				long now = System.currentTimeMillis();
+				Round r = null;
+				long nowPlusTwoDays = now + 2 * 24 * 3600 * 1000l;
+
+				for (Round rr : rounds) {
+					boolean later = r == null || rr.getDate() > r.getDate();
+					boolean inPast = rr.getDate() < nowPlusTwoDays;
+					if (later && inPast) {
+						r = rr;
 					}
 				}
+				round = r;
+				roundNumber = r.getNumber();
+				return;
 			}
-
-		} else {
-			rounds = new ArrayList<Round>();
-			round = new Round();
 		}
+
+		rounds = new ArrayList<Round>();
+		round = new Round();
+		roundNumber = 1;
 	}
 
 	public RoundEncoder getRoundEncoder() {

@@ -28,7 +28,8 @@
   	 <t:delegate to="block:totals"/>
  	 </t:if>
 	 
-	 <t:pagelink page="index"  context="[country, otherSeason, round.number]" class="links">${otherSeason}</t:pagelink>
+	 <t:pagelink page="index"  context="[country, season]" class="links">${otherSeason}</t:pagelink>
+	 <t:pagelink page="rider/signin" context="[country, season, round.number]" class="links">Sign In</t:pagelink>
 	 
 	 <t:block id="totals">
  	 <t:pagelink page="totals"  context="[country, season, round.number]" class="links">Totals</t:pagelink>
@@ -63,7 +64,7 @@
        	<td class='number' bgcolor = '${rider.bibColor}'> 	${rider.startNumber} </td>
        	<td class='points'> 	${rider.nationality} </td>
       	<td class='points'> 	${rider.gender} </td>
-       	<td class='table-text'> ${rider.fullName}</td>   
+       	<td class='table-text'> <t:pagelink page="riderPage" context="rider.riderNumber" class="links">	${rider.fullName}</t:pagelink></td>   
 		<td class='points'>		${rider.penalty1}</td>
 		<td class='time'> 	${rider.time1}</td>
         <td class='points'>		${rider.penalty2}</td>

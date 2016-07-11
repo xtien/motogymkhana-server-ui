@@ -20,10 +20,13 @@ public class ServerConstants {
 	
 	public static final String UI_GET_RIDERS = "/ui/getRiders/";
 	public static final String UI_GET_ROUNDS = "/ui/getRounds/";	
-	public static final String UI_REGISTER = "/ui/register/";	
-	public static final String UI_LOGIN = "/ui/login/";	
+	public static final String UI_REGISTER = "/ui/registerRider/";	
+	public static final String UI_LOGIN = "/ui/signinRider/";	
 	public static final String UI_EDIT_PROFILE = "/ui/editProfile/";	
-	
+	public static final String UI_SEND_TOKEN = "/ui/sendToken/";	
+	public static final String UI_GET_RIDER = "/ui/getRider/";
+	public static final String UI_UPDATE_RIDER = "/ui/updateRider/";
+
 	public static final String MOTOGYMKHANA = "/motogymkhana";
 
 	public static String digestAlgorithm = "SHA-256";

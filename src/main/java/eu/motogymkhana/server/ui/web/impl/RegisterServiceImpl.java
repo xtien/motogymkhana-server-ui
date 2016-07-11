@@ -16,13 +16,17 @@ import org.slf4j.Logger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import eu.motogymkhana.server.api.LoginRequest;
-import eu.motogymkhana.server.api.LoginResult;
-import eu.motogymkhana.server.api.RegisterRequest;
-import eu.motogymkhana.server.api.RegisterResult;
+import eu.motogymkhana.server.api.request.RegisterRequest;
+import eu.motogymkhana.server.api.request.SigninRiderRequest;
+import eu.motogymkhana.server.api.request.TokenRequest;
+import eu.motogymkhana.server.api.result.LoginResult;
+import eu.motogymkhana.server.api.result.RegisterRiderResult;
+import eu.motogymkhana.server.api.result.SigninRiderResult;
+import eu.motogymkhana.server.api.result.TokenResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.ui.api.URLHelper;
-import eu.motogymkhana.server.ui.api.URLHelperImpl;
+import eu.motogymkhana.server.ui.api.impl.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
 import eu.motogymkhana.server.ui.web.RegisterServiceRemote;
@@ -37,28 +41,28 @@ public class RegisterServiceImpl implements RegisterServiceLocal, RegisterServic
 
 	@Inject
 	private ObjectMapper mapper;
-	
+
 	@Inject
 	private URLHelper urlHelper;
 
 	@Override
-	public RegisterResult register(String userName, String pw, String pwRep)
+	public RegisterRiderResult register(String userName, Country country, int season)
 			throws JsonProcessingException {
 
-		RegisterResult result = new RegisterResult();
+		RegisterRiderResult result = new RegisterRiderResult();
 
-		RegisterRequest request = new RegisterRequest(userName, pw, pwRep);
+		RegisterRequest request = new RegisterRequest(userName, country, season);
 		String input = mapper.writeValueAsString(request);
 
 		try {
-			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getListRidersUrl(),
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getRegisterUrl(),
 					input);
 
 			result.setResultCode(httpResult.getStatusCode());
 
 			if (httpResult.getStatusCode() == 200) {
 
-				result = mapper.readValue(httpResult.getString(), RegisterResult.class);
+				result = mapper.readValue(httpResult.getString(), RegisterRiderResult.class);
 
 			} else {
 				result.setMessage(httpResult.getErrorMessage());
@@ -77,22 +81,21 @@ public class RegisterServiceImpl implements RegisterServiceLocal, RegisterServic
 	}
 
 	@Override
-	public LoginResult login(String userName, String pw) throws JsonProcessingException {
-		
-		LoginResult result = new LoginResult();
+	public SigninRiderResult login(String userName, String pw) throws JsonProcessingException {
 
-		LoginRequest request = new LoginRequest(userName, pw);
+		SigninRiderResult result = new SigninRiderResult();
+
+		SigninRiderRequest request = new SigninRiderRequest(userName, pw);
 		String input = mapper.writeValueAsString(request);
 
 		try {
-			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getListRidersUrl(),
-					input);
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getLoginUrl(), input);
 
 			result.setResultCode(httpResult.getStatusCode());
 
 			if (httpResult.getStatusCode() == 200) {
 
-				result = mapper.readValue(httpResult.getString(), LoginResult.class);
+				result = mapper.readValue(httpResult.getString(), SigninRiderResult.class);
 
 			} else {
 				result.setMessage(httpResult.getErrorMessage());
@@ -108,5 +111,40 @@ public class RegisterServiceImpl implements RegisterServiceLocal, RegisterServic
 		}
 
 		return result;
+	}
+
+	@Override
+	public TokenResult sendToken(String userName, String password, String token)
+			throws JsonProcessingException {
+
+		TokenResult result = new TokenResult();
+		TokenRequest request = new TokenRequest(userName, password, token);
+		String input = mapper.writeValueAsString(request);
+
+		try {
+			HttpResultWrapper httpResult = client.postStringFromUrl(urlHelper.getSendTokenUrl(),
+					input);
+
+			result.setResultCode(httpResult.getStatusCode());
+
+			if (httpResult.getStatusCode() == 200) {
+
+				result = mapper.readValue(httpResult.getString(), TokenResult.class);
+
+			} else {
+				result.setMessage(httpResult.getErrorMessage());
+				result.setResultCode(httpResult.getStatusCode());
+			}
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			result.setResultCode(-1);
+		} catch (IOException e) {
+			e.printStackTrace();
+			result.setResultCode(-1);
+		}
+
+		return result;
+
 	}
 }

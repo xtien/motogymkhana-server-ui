@@ -9,8 +9,11 @@ package eu.motogymkhana.server.ui.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.LoginResult;
-import eu.motogymkhana.server.api.RegisterResult;
+import eu.motogymkhana.server.api.result.LoginResult;
+import eu.motogymkhana.server.api.result.RegisterRiderResult;
+import eu.motogymkhana.server.api.result.SigninRiderResult;
+import eu.motogymkhana.server.api.result.TokenResult;
+import eu.motogymkhana.server.model.Country;
 
 
 
@@ -20,7 +23,9 @@ import eu.motogymkhana.server.api.RegisterResult;
  */
 public interface RegisterServiceLocal extends RegisterServiceRemote {
 
-	RegisterResult register(String userName, String pw, String pwRep) throws JsonProcessingException;
+	RegisterRiderResult register(String userName, Country country, int season) throws JsonProcessingException;
 	
-	LoginResult login(String userName, String pw) throws JsonProcessingException;
+	SigninRiderResult login(String userName, String pw) throws JsonProcessingException;
+
+	TokenResult sendToken(String userName, String password, String token) throws JsonProcessingException;
 }

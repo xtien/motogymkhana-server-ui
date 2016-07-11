@@ -20,7 +20,7 @@ import org.apache.tapestry5.ioc.annotations.Symbol;
 import eu.motogymkhana.server.ui.Constants;
 
 /**
- * Layout component for pages of application gossipUI.
+ * Layout component for pages of application motogymkhana UI.
  */
 @Import(stylesheet = "layout/layout.css")
 public class Layout {

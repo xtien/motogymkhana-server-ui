@@ -1,0 +1,84 @@
+<html t:type="layout" title="Moto Gymkhana"
+      t:sidebarTitle="Framework Version"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_4.xsd"
+      xmlns:p="tapestry:parameter">
+        <!-- Most of the page content, including <head>, <body>, etc. tags, comes from Layout.tml -->
+
+<h2>${title}</h2>
+<p>${resultCode} ${message} ${text}</p>
+<p>
+	 <t:pagelink page="index" context="[country, season, roundNumber]" class="links">Home</t:pagelink>
+</p>
+
+<BR/>
+ 
+    <table border="0">
+        <tr>
+            <td> 
+               <table border="0">
+                  <tr>
+                     <td>
+                        <img vspace="30" class='rider-image'  src="${imageUrl}"></img>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <t:form style="width: 300px" t:id="uploadAvatarForm">
+                          <input t:type="upload" t:id="riderPictureFile" t:value="riderPictureFile" /><br/>
+                          <input t:type="Submit" t:id="uploadRider" value="Upload new rider picture" /><br/>
+                        </t:form>
+                     </td>
+                  </tr>
+               </table>
+               </td>
+               <td>
+                    
+               <t:form t:id="profileForm">
+               <t:errors/>
+               <table border="0">
+                   <tr>
+        	          <td class='table-text'> ${rider.fullName}</td>   
+                   </tr>
+                     <tr><td><br/><br/></td></tr>
+                   <tr>
+                      <td>Bike:</td>
+ 		              <td><input t:type="textfield" t:id="riderBike" style="width: 400px;"/></td>
+                   </tr>
+                   <tr><td><br/><br/></td></tr>
+                   <tr vspace="30">
+                      <td valign="top">Profile:</td>
+   		           <td ><input t:type="textarea" t:id="riderText" style="width: 400px; height: 150px;"/></td>
+                   </tr>
+                   
+                   <tr>
+                   <td></td>
+                      <td ><br/>
+                          <input type="submit" value="Save"/>
+                      </td>
+                   </tr>
+               </table>
+               </t:form>
+                    
+             </td>
+         </tr>
+         <tr>
+             <td> 
+                <table border="0">
+                   <tr>
+                      <td>
+                        <img vspace="30"  class='rider-image'  src="${bikeImageUrl}"></img>
+                      </td>
+                   </tr>
+                   <tr>
+                      <td >
+                         <t:form  style="width: 300px" t:id="uploadBikeForm">
+                            <input t:type="upload" t:id="bikePictureFile" t:value="bikePictureFile" /><br/>
+                            <input t:type="Submit" t:id="uploadBike" value="Upload new bike picture" /><br/>
+                         </t:form>
+                      </td>
+                   </tr>
+                 </table>
+              </td>
+          </tr>
+       </table>
+ </html>

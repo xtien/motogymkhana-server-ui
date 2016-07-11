@@ -5,11 +5,12 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.ui.api;
+package eu.motogymkhana.server.ui.api.impl;
 
 import eu.motogymkhana.server.ServerConstants;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
+import eu.motogymkhana.server.ui.api.URLHelper;
 
 public class URLHelperImpl implements URLHelper {
 
@@ -76,6 +77,21 @@ public class URLHelperImpl implements URLHelper {
 		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_EDIT_PROFILE;
 	}
 
+	@Override
+	public String getSendTokenUrl() {
+		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_SEND_TOKEN;
+	}
+
+	@Override
+	public String getUpdateRiderUrl() {
+		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_UPDATE_RIDER;
+	}
+
+	@Override
+	public String getGetRiderUrl() {
+		return getBaseUrl() + ServerConstants.MOTOGYMKHANA + ServerConstants.UI_GET_RIDER;
+	}
+	
 	private String getBaseUrl() {
 		return server + ":" + (useHttps ? portHttps : portHttp);
 	}

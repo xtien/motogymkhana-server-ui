@@ -14,7 +14,9 @@ import org.apache.tapestry5.services.Session;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.LoginResult;
+import eu.motogymkhana.server.api.result.LoginResult;
+import eu.motogymkhana.server.api.result.RegisterRiderResult;
+import eu.motogymkhana.server.api.result.SigninRiderResult;
 import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
 
 /**
@@ -32,19 +34,21 @@ public class BasicAuthenticator implements Authenticator {
 
 	@Property
 	private String message;
-	
+
 	@Inject
 	private RegisterServiceLocal registerService;
 
 	public void login(String username, String password) throws AuthenticationException {
 
 		try {
-			LoginResult loginResult = registerService.login(username, password);
-			
-			if (loginResult.getResultCode() == 200 && loginResult.isLoggedIn()) {
+			SigninRiderResult loginResult = registerService.login(username, password);
+
+			if (loginResult.getResultCode() == 0
+					&& loginResult.getResultCode() == RegisterRiderResult.OK) {
 				request.getSession(true).setAttribute(AUTH_TOKEN, new Boolean(true));
 			} else {
 				message = "not logged in";
+				throw new AuthenticationException(message);
 			}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block

@@ -25,6 +25,8 @@ public class UpdateRiderRequest extends GymkhanaRequest{
 		this.rider = rider;
 		this.email = email;
 		this.password = password;
+		this.country = rider.getCountry();
+		this.season = rider.getSeason();
 	}
 
 	public Rider getRider() {

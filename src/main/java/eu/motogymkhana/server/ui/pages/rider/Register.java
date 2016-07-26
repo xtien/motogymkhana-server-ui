@@ -7,6 +7,9 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.pages.rider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Log;
@@ -67,10 +70,10 @@ public class Register {
 	@Inject
 	private Logger log;
 
-	@Persist
+	@Property
 	private int season;
 
-	@Persist
+	@Property
 	private Country country;
 
 	@Log
@@ -108,6 +111,15 @@ public class Register {
 		country = Country.valueOf(countryString);
 
 		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+	
+	List<String> onPassivate() {
+
+		List returnParams = new ArrayList();
+		returnParams.add(country.name());
+		returnParams.add(String.valueOf(season));
+
+		return returnParams;
 	}
 
 	public String getFlashMessage() {

@@ -195,7 +195,7 @@ public class Index {
 			}
 		}
 
-		String eventURL = refreshZone.getLink().toAbsoluteURI();
+		String eventURL = refreshZone.getLink().toRedirectURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
 				eventURL, refreshRate, 100);
 	}

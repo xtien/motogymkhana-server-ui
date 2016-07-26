@@ -151,13 +151,17 @@ public class Profile {
 
 		if (riderPicturefile != null) {
 			String pictureFileName = writeFile(riderPicturefile, maxRiderImageSize, "rider");
-			rider.setImageUrl(pictureUrl + pictureFileName);
-			imageUrl = rider.getImageUrl();
+			if (pictureFileName != null) {
+				rider.setImageUrl(pictureUrl + pictureFileName);
+				imageUrl = rider.getImageUrl();
 
-			try {
-				riderService.updateRider(rider, username, password);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+				try {
+					riderService.updateRider(rider, username, password);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			} else {
+				message = "Invalid file format or location";
 			}
 		}
 	}
@@ -166,13 +170,17 @@ public class Profile {
 
 		if (bikePicturefile != null) {
 			String pictureFileName = writeFile(bikePicturefile, maxBikeImageSize, "bike");
-			rider.setBikeImageUrl(pictureUrl + pictureFileName);
-			bikeImageUrl = rider.getBikeImageUrl();
+			if (pictureFileName != null) {
+				rider.setBikeImageUrl(pictureUrl + pictureFileName);
+				bikeImageUrl = rider.getBikeImageUrl();
 
-			try {
-				riderService.updateRider(rider, username, password);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+				try {
+					riderService.updateRider(rider, username, password);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+			} else {
+				message = "Invalid file format or location";
 			}
 		}
 	}
@@ -195,6 +203,7 @@ public class Profile {
 			}
 
 			if (rider != null) {
+				Rider r = rider;
 				riderText = rider.getText();
 				riderBike = rider.getBike();
 				imageUrl = rider.getImageUrl();
@@ -209,6 +218,10 @@ public class Profile {
 	private String writeFile(UploadedFile pictureFile, int maxSize, String defaultName) {
 
 		String fileName = pictureFile.getFileName();
+		if (fileName.contains("http") || fileName.contains("://")) {
+			return null;
+		}
+
 		String extension = fileName.contains(".") ? fileName.substring(
 				fileName.lastIndexOf(".") + 1, fileName.length()) : "";
 		File file = new File(fileDir + "/" + defaultName + rider.getRiderNumberString() + "."
@@ -224,7 +237,7 @@ public class Profile {
 				height = maxSize * height / width;
 				width = maxSize;
 			} else {
-				width = maxSize * width / width;
+				width = maxSize * width / height;
 				height = maxSize;
 			}
 

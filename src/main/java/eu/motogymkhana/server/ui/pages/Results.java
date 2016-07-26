@@ -180,7 +180,7 @@ public class Results {
 				refreshRate = Integer.parseInt(str);
 			}
 		}
-		String eventURL = refreshZone.getLink().toAbsoluteURI();
+		String eventURL = refreshZone.getLink().toRedirectURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
 				eventURL, refreshRate, 100);
 	}

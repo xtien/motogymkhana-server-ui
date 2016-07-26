@@ -7,9 +7,14 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
+import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.web.RidersServiceLocal;
@@ -32,22 +37,44 @@ public class RiderPage {
 
 	@Property
 	private Rider rider;
+	
+	@Property
+	private Country country;
+	
+	@Property
+	private int season;
 
 	@Inject
 	private RidersServiceLocal riderService;
 
 	void onActivate(String countryString, int season, String email, String password, int riderNumber) {
 		this.riderNumber = riderNumber;
+		this.season = season;
+		this.country = Country.valueOf(countryString);
 	}
 
-	void onActivate(int riderNumber) {
+	void onActivate(String countryString, int season, int riderNumber) {
 		this.riderNumber = riderNumber;
+		this.season = season;
+		this.country = Country.valueOf(countryString);
+	}
+	
+	List onPassivate(){
+		
+		List returnParams = new ArrayList();
+		if (country == null) {
+			country = Country.NL;
+		}
+		returnParams.add(country.name());
+		returnParams.add(season);
+
+		return returnParams;
 	}
 
 	void setupRender() {
 		rider = riderService.getRider(riderNumber);
-		title = Constants.PROFILE_TITLE + " " + rider.getFullName();
 		if (rider == null) {
+			title = Constants.PROFILE_TITLE + " " + rider.getFullName();
 			rider = new Rider();
 			text = "Rider not found";
 		}

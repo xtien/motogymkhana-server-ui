@@ -10,6 +10,7 @@ package eu.motogymkhana.server.ui.pages.rider;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Log;
+import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.ioc.Messages;
@@ -47,7 +48,7 @@ public class SendToken {
 	@Property
 	private String text;
 
-	@Property
+	@Persist
 	private String token;
 
 	@Inject

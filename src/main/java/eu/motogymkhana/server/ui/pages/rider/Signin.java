@@ -115,7 +115,7 @@ public class Signin {
 		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
 	}
 
-	List<String> onPassivate() {
+	List onPassivate() {
 
 		List returnParams = new ArrayList();
 		if (country == null) {

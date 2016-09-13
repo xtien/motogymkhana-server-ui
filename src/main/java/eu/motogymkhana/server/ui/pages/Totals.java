@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.motogymkhana.server.api.result.ListRidersResult;
 import eu.motogymkhana.server.api.result.ListRoundsResult;
+import eu.motogymkhana.server.model.Bib;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.model.Round;
@@ -111,7 +112,7 @@ public class Totals {
 
 	@Property
 	private int otherSeason = 2015;
-	
+
 	private List<Integer> points;
 
 	@InjectPage
@@ -312,6 +313,10 @@ public class Totals {
 
 		Iterator<Rider> riderIterator = riders.iterator();
 
+		/*
+		 * This creates a map with key date (the date of the race) and value a
+		 * list of times.
+		 */
 		while (riderIterator.hasNext()) {
 			Rider rider = riderIterator.next();
 
@@ -331,6 +336,10 @@ public class Totals {
 			}
 		}
 
+		/*
+		 * for every race (key in timesMap) this sorts the rider times then
+		 * assigns points per times object.
+		 */
 		for (long key : timesMap.keySet()) {
 
 			List<Times> list = new ArrayList<Times>();
@@ -346,12 +355,29 @@ public class Totals {
 			});
 
 			int pointsPointer = 0;
+			Times previousRiderTimes = null;
+			long bestTime = 0;
+
 			for (Times times : list) {
+				if(bestTime == 0){
+					bestTime = times.getBestTime();
+				}
 				if (times.getBestTime() > 0 && pointsPointer < points.size()) {
 
 					int p = points.get(pointsPointer++);
-
 					times.setPoints(p);
+					times.setBibPointsColor(bestTime, settings);
+
+					/*
+					 * this should fix two riders ending with exactly equal
+					 * times.
+					 */
+					if (previousRiderTimes == null
+							|| previousRiderTimes.getBestTime() != times.getBestTime()) {
+						previousRiderTimes = times;
+					} else {
+						times.setPoints(previousRiderTimes.getPoints());
+					}
 				}
 			}
 		}

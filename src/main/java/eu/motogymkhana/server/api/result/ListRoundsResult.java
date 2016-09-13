@@ -32,4 +32,8 @@ public class ListRoundsResult extends GymkhanaResult {
 		this.rounds = rounds;
 	}
 
+	public boolean hasRounds() {
+		return rounds != null && rounds.size() > 0;
+	}
+
 }

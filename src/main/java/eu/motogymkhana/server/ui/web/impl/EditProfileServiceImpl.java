@@ -8,8 +8,6 @@
 package eu.motogymkhana.server.ui.web.impl;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.LinkedList;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,21 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.motogymkhana.server.api.request.EditProfileRequest;
 import eu.motogymkhana.server.api.request.GymkhanaRequest;
 import eu.motogymkhana.server.api.result.EditProfileResult;
-import eu.motogymkhana.server.api.result.ListRidersResult;
-import eu.motogymkhana.server.api.result.LoginResult;
-import eu.motogymkhana.server.api.result.RegisterRiderResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.ui.api.URLHelper;
-import eu.motogymkhana.server.ui.api.impl.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.services.EditProfileServiceLocal;
 import eu.motogymkhana.server.ui.web.EditProfileServiceRemote;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
-import eu.motogymkhana.server.ui.web.RegisterServiceRemote;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RidersServiceRemote;
 
 public class EditProfileServiceImpl implements EditProfileServiceLocal, EditProfileServiceRemote {
 

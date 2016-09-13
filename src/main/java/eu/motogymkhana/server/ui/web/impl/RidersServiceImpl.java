@@ -65,8 +65,6 @@ public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemot
 
 			if (httpResult.getStatusCode() == 200) {
 
-				log.debug("rounds = " + httpResult.getString());
-
 				ListRidersResult ridersResult = mapper.readValue(httpResult.getString(),
 						ListRidersResult.class);
 				if (ridersResult.getResultCode() == 0) {

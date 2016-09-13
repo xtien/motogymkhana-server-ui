@@ -7,13 +7,9 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.httpClient;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.DnsResolver;
 import org.apache.http.conn.HttpConnectionFactory;
 import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.routing.HttpRoute;
@@ -23,7 +19,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 
 public class HttpClientProvider {
 
@@ -46,22 +41,8 @@ public class HttpClientProvider {
 				.register("http", PlainConnectionSocketFactory.INSTANCE)
 				.register("https", PlainConnectionSocketFactory.INSTANCE).build();
 
-		DnsResolver dnsResolver = new SystemDefaultDnsResolver() {
-
-			@Override
-			public InetAddress[] resolve(final String host) throws UnknownHostException {
-				if (host.equalsIgnoreCase("pengo.xs4all.nl")) {
-					return new InetAddress[] { InetAddress
-							.getByAddress(new byte[] { 127, 0, 0, 1 }) };
-				} else {
-					return super.resolve(host);
-				}
-			}
-
-		};
-
 		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
-				socketFactoryRegistry, connFactory, dnsResolver);
+				socketFactoryRegistry, connFactory);
 
 		CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(connManager)
 				.build();

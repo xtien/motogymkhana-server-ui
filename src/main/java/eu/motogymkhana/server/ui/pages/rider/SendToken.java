@@ -18,7 +18,6 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.result.RegisterRiderResult;
 import eu.motogymkhana.server.api.result.TokenResult;
 import eu.motogymkhana.server.ui.annotations.AnonymousAccess;
 import eu.motogymkhana.server.ui.pages.Index;

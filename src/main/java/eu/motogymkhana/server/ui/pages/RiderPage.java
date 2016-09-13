@@ -10,7 +10,6 @@ package eu.motogymkhana.server.ui.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 

@@ -9,8 +9,6 @@ package eu.motogymkhana.server.ui.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.result.ListRidersResult;
-import eu.motogymkhana.server.api.result.LoginResult;
 import eu.motogymkhana.server.api.result.RegisterRiderResult;
 import eu.motogymkhana.server.api.result.SigninRiderResult;
 import eu.motogymkhana.server.api.result.TokenResult;

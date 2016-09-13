@@ -53,15 +53,15 @@
        	<td class='points' bgcolor = '${rider.bibColor}'> 		${rider.position} </td>
       	<td class='points'> 		${rider.country} </td>
       	<td class='points'> 		${rider.gender} </td>
-       	<td class='table-text'> <t:pagelink page="riderPage" context="rider.riderNumber" class="links">	${rider.fullName}</t:pagelink></td>   
-       	<td class='points'> 		${rider.points(0)} </td>
-      	<td class='points'> 		${rider.points(1)} </td>
-     	<td class='points'> 		${rider.points(2)} </td>
-     	<td class='points'> 		${rider.points(3)} </td>
-     	<td class='points'> 		${rider.points(4)} </td>
-     	<td class='points'> 		${rider.points(5)} </td>
-     	<td class='points'> 		${rider.points(6)} </td>
-     	<td class='points'> 		${rider.points(7)} </td>
+       	<td class='table-text'> <t:pagelink page="riderPage" context="[country, season, rider.riderNumber]" class="links">	${rider.fullName}</t:pagelink></td>   
+       	<td class='points'> 		<font color="${rider.newBibColor(0)}">${rider.points(0)}</font> </td>
+      	<td class='points'> 		<font color="${rider.newBibColor(1)}">${rider.points(1)}</font> </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(2)}">${rider.points(2)}</font> </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(3)}">${rider.points(3)}</font>  </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(4)}">${rider.points(4)}</font>  </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(5)}">${rider.points(5)}</font>  </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(6)}">${rider.points(6)}</font>  </td>
+     	<td class='points'> 		<font color="${rider.newBibColor(7)}">${rider.points(7)}</font>  </td>
      	<td class='points'> 		${rider.totalPoints} </td>
  
         </tr>

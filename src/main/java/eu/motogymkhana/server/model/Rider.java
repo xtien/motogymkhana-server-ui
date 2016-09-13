@@ -18,11 +18,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import eu.motogymkhana.server.ui.Constants;
+import eu.motogymkhana.server.ui.web.impl.RidersServiceImpl;
 
 public class Rider {
 
@@ -114,6 +116,8 @@ public class Rider {
 	@JsonIgnore
 	private HashMap<Integer, String> sortedBibList = new HashMap<Integer, String>();
 
+	private static final Log log = LogFactory.getLog(RidersServiceImpl.class);
+
 	public Rider() {
 
 	}
@@ -196,17 +200,14 @@ public class Rider {
 
 	public String newBibColor(int i) {
 
-		if (sortedBibList.size() == 0) {
-			createSortedBibList();
+		if (sortedTimesList.size() == 0) {
+			createSortedTimesList();
 		}
-
-		return sortedBibList.get(i);
-	}
-
-	private void createSortedBibList() {
-
-		for (Times t : timesList) {
-			sortedBibList.put(t.getRound(), t.getNewBibColor());
+		if (i < sortedTimesList.size()) {
+		String color = sortedTimesList.get(i).getNewBibColor();
+		return color;
+		} else {
+			return "#000000";
 		}
 	}
 
@@ -283,7 +284,8 @@ public class Rider {
 	public boolean hasEUTimes() {
 
 		Times euTimes = getEUTimes();
-		return euTimes != null && euTimes.isRegistered() && !(euTimes.isDisqualified1() && euTimes.isDisqualified2())
+		return euTimes != null && euTimes.isRegistered()
+				&& !(euTimes.isDisqualified1() && euTimes.isDisqualified2())
 				&& euTimes.getBestTime() > 0;
 	}
 
@@ -382,10 +384,6 @@ public class Rider {
 
 	}
 
-	public void addTimes(Times times) {
-		timesList.add(times);
-	}
-
 	public int getTotalPoints(int roundsCountingForSeasonResult) {
 
 		if (totalPoints == null) {
@@ -393,6 +391,10 @@ public class Rider {
 			List<Integer> totalPointsList = new ArrayList<Integer>();
 
 			for (Times times : timesList) {
+				String date = times.getDateString();
+				if (firstName.equals("Theo")) {
+					log.debug(firstName + " " + date);
+				}
 				totalPointsList.add(times.getPoints());
 			}
 
@@ -506,7 +508,7 @@ public class Rider {
 	private boolean hasText() {
 		return text != null;
 	}
-	
+
 	private boolean hasBike() {
 		return bike != null;
 	}

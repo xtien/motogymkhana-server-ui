@@ -26,7 +26,6 @@ import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.ui.api.URLHelper;
-import eu.motogymkhana.server.ui.api.impl.URLHelperImpl;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
 import eu.motogymkhana.server.ui.web.RoundsServiceRemote;
@@ -63,8 +62,6 @@ public class RoundsServiceImpl implements RoundsServiceLocal, RoundsServiceRemot
 
 			if (httpResult.getStatusCode() == 200) {
 				
-				logger.debug("rounds = " + httpResult.getString());
-
 				ListRoundsResult roundsResult = mapper.readValue(httpResult.getString(),
 						ListRoundsResult.class);
 				if (roundsResult.getResultCode() == 0) {

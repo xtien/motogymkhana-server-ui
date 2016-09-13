@@ -20,7 +20,6 @@ import javax.imageio.ImageIO;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
-import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.upload.services.UploadedFile;
@@ -29,7 +28,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
-import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.annotations.RequiresLogin;

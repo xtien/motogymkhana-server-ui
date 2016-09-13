@@ -80,9 +80,17 @@ public class Times {
 	@JsonProperty(REGISTERED)
 	private boolean registered = true;
 
+	@JsonIgnore
 	private int points = 0;
+
+	@JsonIgnore
 	private String fontColor = "#000000";
+
+	@JsonIgnore
 	private int roundNumber;
+
+	@JsonIgnore
+	private Bib newBibColor = Bib.Y;
 
 	public Times() {
 	}
@@ -282,35 +290,35 @@ public class Times {
 	public String toString() {
 		return Constants.dateFormat.format(date);
 	}
-
-	public void setNewBibColor(long bestTimeInRound, Settings settings, List<Round> rounds) {
-
-		this.roundNumber = getRoundNumberForDate(rounds);
-
+	
+	public void setBibPointsColor(long bestTime, Settings settings) {
 		long myBestTime = getBestTime();
-		if (myBestTime < (bestTimeInRound * settings.getPercentageBlue()) / 100) {
-			fontColor = "#00ccff";
-		} else if (myBestTime < (bestTimeInRound * settings.getPercentageGreen() / 100)) {
-			fontColor = "#34d561";
-		} else {
-			fontColor = "#000000";
+		if (myBestTime <= (bestTime * settings.getPercentageBlue()) / 100) {
+			newBibColor = Bib.B;
+		} else if (myBestTime <= (bestTime * settings.getPercentageGreen()) / 100) {
+			newBibColor = Bib.G;
 		}
-	}
-
-	private int getRoundNumberForDate(List<Round> rounds) {
-		for (Round r : rounds) {
-			if (r.getDate() == this.date) {
-				return r.getNumber();
-			}
-		}
-		return -1;
 	}
 
 	public String getNewBibColor() {
-		return fontColor;
+		
+		switch (newBibColor) {
+		case G:
+			return "#34d561";
+		case B:
+			return "#00ccff";
+		case R:
+			return "#ff0404";
+		default:
+			return "#000000";
+		}
 	}
 
 	public int getRound() {
 		return roundNumber;
+	}
+
+	public String getDateString() {
+		return Constants.dateFormat.format(date);
 	}
 }

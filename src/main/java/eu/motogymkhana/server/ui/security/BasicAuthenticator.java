@@ -14,7 +14,6 @@ import org.apache.tapestry5.services.Session;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.result.LoginResult;
 import eu.motogymkhana.server.api.result.RegisterRiderResult;
 import eu.motogymkhana.server.api.result.SigninRiderResult;
 import eu.motogymkhana.server.ui.web.RegisterServiceLocal;

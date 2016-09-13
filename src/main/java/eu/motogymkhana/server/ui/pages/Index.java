@@ -132,9 +132,6 @@ public class Index {
 
 	void onPrepare() {
 
-		log.debug("onPrepare ");
-		log.debug("onPrepare " + country + " " + season);
-
 		ListRoundsResult roundsResult = null;
 		try {
 			roundsResult = roundsService.getRounds(country, season);
@@ -153,8 +150,6 @@ public class Index {
 	}
 
 	void onActivate(String countryString, int season, int roundNumber) {
-
-		log.debug("onActivate " + countryString + " " + season + " " + roundNumber);
 
 		this.roundNumber = roundNumber;
 		this.season = season;
@@ -211,14 +206,17 @@ public class Index {
 			e.printStackTrace();
 		}
 
-		log.debug("roundsResult "
-				+ ((roundsResult == null) ? "null" : (roundsResult.getResultCode())));
-
-		if (roundsResult != null && roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.hasRounds() && roundsResult.getResultCode() == 200) {
 			log.debug("roundsResult size" + roundsResult.getRounds().size());
 
 			setRounds(roundsResult);
 			roundsModel = selectModelFactory.create(rounds, "dateString");
+		} else {
+			round = new Round();
+			rounds = new ArrayList<Round>();
+			rounds.add(round);
+			roundsModel = selectModelFactory.create(rounds, "dateString");
+			roundNumber = 1;
 		}
 
 		ListRidersResult result = null;
@@ -298,7 +296,7 @@ public class Index {
 					}
 				}
 				round = r;
-				roundNumber = r.getNumber();
+				roundNumber = r != null ? r.getNumber() : 0;
 				return;
 			}
 		}

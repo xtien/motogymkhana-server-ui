@@ -5,7 +5,7 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.ui.web;
+package eu.motogymkhana.server.ui.web.local;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -13,18 +13,20 @@ import eu.motogymkhana.server.api.response.UpdateRiderResponse;
 import eu.motogymkhana.server.api.result.ListRidersResult;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
+import eu.motogymkhana.server.ui.web.remote.RidersServiceRemote;
 
 /**
- * The <code>IAgentServiceRemote</code> bean exposes the business methods in the
+ * The <code>IPersonServiceLocal</code> bean exposes the business methods in the
  * interface.
  */
-public interface RidersServiceRemote {
+public interface RidersServiceLocal extends RidersServiceRemote {
 
 	ListRidersResult getRiders(Country country, int season) throws JsonProcessingException;
 
 	Rider getRider(int riderNumber);
-	
-	Rider getRider(String email, String password, Country country, int season) throws JsonProcessingException;
-	
+
+	Rider getRider(String email, String password, Country country, int season)
+			throws JsonProcessingException;
+
 	UpdateRiderResponse updateRider(Rider rider, String email, String password) throws JsonProcessingException;
 }

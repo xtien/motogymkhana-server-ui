@@ -9,6 +9,7 @@ package eu.motogymkhana.server.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,8 +36,8 @@ public class Times {
 	private static final String COUNTRY = "country";
 	private static final String SEASON = "season";
 
-	@JsonIgnore
-	private volatile int _id;
+	@JsonProperty(ID)
+	private int _id;
 
 	@JsonProperty(COUNTRY)
 	private Country country;
@@ -47,7 +48,7 @@ public class Times {
 	@JsonProperty(TIMESTAMP)
 	private long timeStamp;
 
-	@JsonIgnore
+	@JsonBackReference
 	private Rider rider;
 
 	@JsonProperty(DATE)
@@ -290,7 +291,7 @@ public class Times {
 	public String toString() {
 		return Constants.dateFormat.format(date);
 	}
-	
+
 	public void setBibPointsColor(long bestTime, Settings settings) {
 		long myBestTime = getBestTime();
 		if (myBestTime <= (bestTime * settings.getPercentageBlue()) / 100) {
@@ -301,7 +302,7 @@ public class Times {
 	}
 
 	public String getNewBibColor() {
-		
+
 		switch (newBibColor) {
 		case G:
 			return "#34d561";
@@ -320,5 +321,17 @@ public class Times {
 
 	public String getDateString() {
 		return Constants.dateFormat.format(date);
+	}
+
+	public int getSeason() {
+		return season;
+	}
+
+	public Country getCountry() {
+		return this.country;
+	}
+
+	public boolean isFor(Country country, int season) {
+		return this.country == country && this.season == season;
 	}
 }

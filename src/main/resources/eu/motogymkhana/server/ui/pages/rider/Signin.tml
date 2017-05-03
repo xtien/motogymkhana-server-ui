@@ -6,6 +6,7 @@
  <h2>${title}</h2>
 
 <p>
+	<t:pagelink page="index" context="[country, season]" class="links">Home</t:pagelink>
 	<t:pagelink page="rider/register" class="links" context="[country, season]" >Create account</t:pagelink>
 </p>
 	<form t:type="form" class="full-form" t:id="loginForm" t:context="username">

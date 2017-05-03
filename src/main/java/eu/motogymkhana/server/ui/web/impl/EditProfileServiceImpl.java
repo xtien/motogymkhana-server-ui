@@ -25,7 +25,7 @@ import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.ui.api.URLHelper;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
 import eu.motogymkhana.server.ui.services.EditProfileServiceLocal;
-import eu.motogymkhana.server.ui.web.EditProfileServiceRemote;
+import eu.motogymkhana.server.ui.web.remote.EditProfileServiceRemote;
 
 public class EditProfileServiceImpl implements EditProfileServiceLocal, EditProfileServiceRemote {
 

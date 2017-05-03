@@ -9,6 +9,7 @@ package eu.motogymkhana.server.ui.web.impl;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.apache.commons.logging.Log;
@@ -28,10 +29,12 @@ import eu.motogymkhana.server.api.result.ListRidersResult;
 import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Rider;
+import eu.motogymkhana.server.model.Times;
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.api.URLHelper;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RidersServiceRemote;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.remote.RidersServiceRemote;
 
 public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemote {
 
@@ -51,6 +54,9 @@ public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemot
 	@Override
 	public ListRidersResult getRiders(Country country, int season) throws JsonProcessingException {
 
+		Constants.country = country;
+		Constants.season = season;
+		
 		ListRidersResult result = new ListRidersResult();
 
 		GymkhanaRequest request = new GymkhanaRequest(country, season);
@@ -68,12 +74,26 @@ public class RidersServiceImpl implements RidersServiceLocal, RidersServiceRemot
 				ListRidersResult ridersResult = mapper.readValue(httpResult.getString(),
 						ListRidersResult.class);
 				if (ridersResult.getResultCode() == 0) {
+					
+					for(Rider rider:ridersResult.getRiders()){
+						if(rider.isHideLastName()){
+							rider.hideLastName();
+						}
+						Iterator<Times> iterator =rider.getTimes().iterator();
+						while(iterator.hasNext()){
+							Times times = iterator.next();
+							if(!times.isFor(country,season)){
+								iterator.remove();
+							}
+						}
+					}
+					
 					result.setRiders(ridersResult.getRiders());
 					result.setSettings(ridersResult.getSettings());
 					result.setMessage("");
 					result.setText(ridersResult.getText());
 
-					this.riders = ridersResult.getRiders();
+					this.riders = result.getRiders();
 
 				} else {
 					result.setResultCode(ridersResult.getResultCode());

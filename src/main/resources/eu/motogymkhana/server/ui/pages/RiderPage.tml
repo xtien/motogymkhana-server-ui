@@ -6,7 +6,11 @@
 
 <h2>${title}</h2>
 <p>${resultCode} ${message} ${text}</p>
-<BR></BR>
+<p>
+	 <t:pagelink page="index" context="[country, season]" class="links">Home</t:pagelink>
+	 <t:pagelink page="rider/signin" context="[country, season]" class="links">Edit your profile</t:pagelink>
+</p>
+<BR/>
 
 <table>
   <tr>

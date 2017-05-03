@@ -10,7 +10,7 @@ package eu.motogymkhana.server.ui;
 import org.apache.tapestry5.ValueEncoder;
 
 import eu.motogymkhana.server.model.Round;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
 
 public class RoundEncoder  implements ValueEncoder<Round> {
 	

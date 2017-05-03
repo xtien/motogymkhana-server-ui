@@ -31,7 +31,7 @@ import eu.motogymkhana.server.model.Rider;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.annotations.RequiresLogin;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
 
 @RequiresLogin
 @Import(library = "FileUpload.js")

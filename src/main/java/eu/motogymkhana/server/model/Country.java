@@ -18,7 +18,7 @@ public enum Country {
 
 	NL("Netherlands"), BE("Belgium"), UK("UK"), FR("France"), DE("Deutschland"), PL("Poland"), RU(
 			"Russia"), CZ("Czech Republic"), UA("Ukrain"), EU("European Championship"), LT(
-			"Lithuania"), JP("Japan");
+			"Lithuania"), JP("Japan"), MD("Moldova");
 
 	private String string;
 

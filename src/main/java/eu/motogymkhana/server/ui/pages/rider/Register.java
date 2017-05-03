@@ -26,7 +26,7 @@ import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.annotations.AnonymousAccess;
 import eu.motogymkhana.server.ui.pages.Index;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RegisterServiceLocal;
 
 @AnonymousAccess
 public class Register {

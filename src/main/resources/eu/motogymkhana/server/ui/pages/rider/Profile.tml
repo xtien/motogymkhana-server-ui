@@ -7,7 +7,7 @@
 <h2>${title}</h2>
 <p>${resultCode} ${message} ${text}</p>
 <p>
-	 <t:pagelink page="index" context="[country, season, roundNumber]" class="links">Home</t:pagelink>
+	 <t:pagelink page="index" context="[country, season]" class="links">Home</t:pagelink>
 </p>
 
 <BR/>

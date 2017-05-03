@@ -32,13 +32,13 @@ import eu.motogymkhana.server.ui.jackson.ObjectMapperProvider;
 import eu.motogymkhana.server.ui.security.Authenticator;
 import eu.motogymkhana.server.ui.security.BasicAuthenticator;
 import eu.motogymkhana.server.ui.security.RequiresLoginFilter;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
 import eu.motogymkhana.server.ui.web.impl.EditProfileServiceImpl;
 import eu.motogymkhana.server.ui.web.impl.RegisterServiceImpl;
 import eu.motogymkhana.server.ui.web.impl.RidersServiceImpl;
 import eu.motogymkhana.server.ui.web.impl.RoundsServiceImpl;
+import eu.motogymkhana.server.ui.web.local.RegisterServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,

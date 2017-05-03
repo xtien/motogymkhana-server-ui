@@ -27,8 +27,8 @@ import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.model.Round;
 import eu.motogymkhana.server.ui.api.URLHelper;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
-import eu.motogymkhana.server.ui.web.RoundsServiceRemote;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.remote.RoundsServiceRemote;
 
 @Singleton
 public class RoundsServiceImpl implements RoundsServiceLocal, RoundsServiceRemote {

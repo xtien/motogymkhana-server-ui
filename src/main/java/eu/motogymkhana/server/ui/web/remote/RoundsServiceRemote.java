@@ -5,24 +5,21 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.ui.web;
+package eu.motogymkhana.server.ui.web.remote;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import eu.motogymkhana.server.api.result.RegisterRiderResult;
-import eu.motogymkhana.server.api.result.SigninRiderResult;
-import eu.motogymkhana.server.api.result.TokenResult;
+import eu.motogymkhana.server.api.result.ListRoundsResult;
 import eu.motogymkhana.server.model.Country;
+import eu.motogymkhana.server.model.Round;
 
 /**
  * The <code>IAgentServiceRemote</code> bean exposes the business methods in the
  * interface.
  */
-public interface RegisterServiceRemote {
+public interface RoundsServiceRemote {
 
-	RegisterRiderResult register(String userName, Country country, int season) throws JsonProcessingException;
-	
-	SigninRiderResult login(String userName, String pw) throws JsonProcessingException;
-	
-	TokenResult sendToken(String userName, String password, String token) throws JsonProcessingException;
+	ListRoundsResult getRounds(Country country, int season) throws JsonProcessingException;
+
+	Round getRound(String id);
 }

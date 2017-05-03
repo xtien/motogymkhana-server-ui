@@ -22,8 +22,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.web.impl.RidersServiceImpl;
 
 public class Rider {
@@ -46,9 +48,15 @@ public class Rider {
 	public static final String IMAGE_URL = "image_url";
 	public static final String BIKE_IMAGE_URL = "bike_image_url";
 	public static final String NATIONALITY = "nationality";
+	public static final String REGISTRATION = "registration";
+	public static final String ANDROID_ID = "android_id";
+	public static final String HIDE_LASTNAME = "hide_lastname";
 
-	@JsonIgnore
+	@JsonProperty(ID)
 	private int _id;
+
+	@JsonProperty(ANDROID_ID)
+	private String androidId;
 
 	@JsonProperty(SEASON)
 	private int season;
@@ -70,6 +78,9 @@ public class Rider {
 
 	@JsonProperty(FIRSTNAME)
 	private String firstName;
+
+	@JsonProperty(HIDE_LASTNAME)
+	private boolean hideLastname = false;
 
 	@JsonProperty(LASTNAME)
 	private String lastName;
@@ -97,6 +108,10 @@ public class Rider {
 
 	@JsonProperty(TIMES)
 	private Set<Times> timesList = new HashSet<Times>();
+
+	@JsonProperty(REGISTRATION)
+	@JsonManagedReference
+	protected Set<Registration> registrations = new HashSet<Registration>();
 
 	@JsonIgnore
 	private List<Times> sortedTimesList = new ArrayList<Times>();
@@ -153,16 +168,33 @@ public class Rider {
 
 	@JsonIgnore
 	public String getBibColor() {
-		switch (bib) {
-		case B:
-			return "#00ccff";
-		case G:
-			return "#34d561";
-		case R:
-			return "#ff0404";
-		default:
+
+		Registration registration = getRegistration();
+
+		if (registration != null && registration.getBib() != null) {
+			switch (registration.getBib()) {
+			case B:
+				return "#00ccff";
+			case G:
+				return "#34d561";
+			case R:
+				return "#ff0404";
+			default:
+				return "#f5fb51";
+			}
+		} else {
 			return "#f5fb51";
 		}
+	}
+
+	private Registration getRegistration() {
+		for (Registration registration : registrations) {
+			if (registration.getCountry() == Constants.country
+					&& registration.getSeason() == Constants.season) {
+				return registration;
+			}
+		}
+		return new Registration();
 	}
 
 	@JsonIgnore
@@ -204,8 +236,8 @@ public class Rider {
 			createSortedTimesList();
 		}
 		if (i < sortedTimesList.size()) {
-		String color = sortedTimesList.get(i).getNewBibColor();
-		return color;
+			String color = sortedTimesList.get(i).getNewBibColor();
+			return color;
 		} else {
 			return "#000000";
 		}
@@ -289,7 +321,7 @@ public class Rider {
 				&& euTimes.getBestTime() > 0;
 	}
 
-	private Times getEUTimes() {
+	public Times getEUTimes() {
 
 		Iterator<Times> iterator = timesList.iterator();
 
@@ -391,10 +423,6 @@ public class Rider {
 			List<Integer> totalPointsList = new ArrayList<Integer>();
 
 			for (Times times : timesList) {
-				String date = times.getDateString();
-				if (firstName.equals("Theo")) {
-					log.debug(firstName + " " + date);
-				}
 				totalPointsList.add(times.getPoints());
 			}
 
@@ -515,7 +543,7 @@ public class Rider {
 
 	@Override
 	public String toString() {
-		return Integer.toString(riderNumber) + " " + firstName + " " + lastName + getTime1() + " "
+		return Integer.toString(_id) + " " + firstName + " " + lastName + " " + getTime1() + " "
 				+ getTime2();
 	}
 
@@ -584,5 +612,13 @@ public class Rider {
 
 	public void setBike(String riderBike) {
 		this.bike = riderBike;
+	}
+
+	public boolean isHideLastName() {
+		return hideLastname;
+	}
+
+	public void hideLastName() {
+		this.lastName = "";
 	}
 }

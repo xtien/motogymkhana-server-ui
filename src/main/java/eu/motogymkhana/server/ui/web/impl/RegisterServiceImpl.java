@@ -26,8 +26,8 @@ import eu.motogymkhana.server.http.HttpResultWrapper;
 import eu.motogymkhana.server.model.Country;
 import eu.motogymkhana.server.ui.api.URLHelper;
 import eu.motogymkhana.server.ui.httpClient.MyHttpClient;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
-import eu.motogymkhana.server.ui.web.RegisterServiceRemote;
+import eu.motogymkhana.server.ui.web.local.RegisterServiceLocal;
+import eu.motogymkhana.server.ui.web.remote.RegisterServiceRemote;
 
 public class RegisterServiceImpl implements RegisterServiceLocal, RegisterServiceRemote {
 

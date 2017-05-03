@@ -26,6 +26,7 @@ import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.SelectModelFactory;
 import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
+import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -40,8 +41,8 @@ import eu.motogymkhana.server.model.Settings;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
 
 /**
  * Start page of application MotoGymkhana UI.
@@ -100,9 +101,6 @@ public class Results {
 	private int season = 2016;
 
 	@Property
-	private int otherSeason = 2015;
-
-	@Property
 	private Country country = Country.NL;
 
 	@Inject
@@ -120,6 +118,9 @@ public class Results {
 	@InjectPage
 	private Totals totalsPage;
 
+	@Inject
+	private Logger log;
+
 	@Property
 	private Boolean hasTotals = true;
 
@@ -135,6 +136,7 @@ public class Results {
 		}
 
 		if (roundsResult != null && roundsResult.getResultCode() == 200) {
+
 			setRounds(roundsResult);
 
 			roundsModel = selectModelFactory.create(rounds, "dateString");
@@ -145,9 +147,24 @@ public class Results {
 
 		this.roundNumber = roundNumber;
 		this.season = season;
-		otherSeason = (this.season == 2015) ? 2016 : 2015;
 		country = Country.valueOf(countryString);
-		title = Constants.TITLE + " " + this.country.getString();
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	void onActivate(String countryString, int season) {
+
+		this.season = season;
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	void onActivate(String countryString) {
+
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
 	}
 
 	List<String> onPassivate() {
@@ -161,7 +178,7 @@ public class Results {
 	}
 
 	void onValidateFromForm() {
-		roundNumber = round == null ? null : round.getNumber();
+		roundNumber = (round == null) ? null : round.getNumber();
 	}
 
 	void setupRender() {
@@ -171,6 +188,7 @@ public class Results {
 	}
 
 	public void afterRender() {
+
 		int refreshRate = 20;
 
 		GymkhanaUIProperties.init();
@@ -180,6 +198,7 @@ public class Results {
 				refreshRate = Integer.parseInt(str);
 			}
 		}
+
 		String eventURL = refreshZone.getLink().toRedirectURI();
 		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
 				eventURL, refreshRate, 100);
@@ -205,9 +224,17 @@ public class Results {
 			e.printStackTrace();
 		}
 
-		if (roundsResult != null && roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.hasRounds() && roundsResult.getResultCode() == 200) {
+			log.debug("roundsResult size" + roundsResult.getRounds().size());
+
 			setRounds(roundsResult);
 			roundsModel = selectModelFactory.create(rounds, "dateString");
+		} else {
+			round = new Round();
+			rounds = new ArrayList<Round>();
+			rounds.add(round);
+			roundsModel = selectModelFactory.create(rounds, "dateString");
+			roundNumber = 1;
 		}
 
 		ListRidersResult result = null;
@@ -221,7 +248,7 @@ public class Results {
 
 		text = result.getText();
 
-		if (result.getResultCode() == 200) {
+		if (result != null && result.getResultCode() == 200) {
 
 			Settings settings = result.getSettings();
 
@@ -294,8 +321,12 @@ public class Results {
 						r = rr;
 					}
 				}
-				round = r;
-				roundNumber = r.getNumber();
+				if(r !=null){
+					round = r;
+				} else {
+					round = rounds.get(0);
+				}
+				roundNumber = r != null ? r.getNumber() : 0;
 				return;
 			}
 		}

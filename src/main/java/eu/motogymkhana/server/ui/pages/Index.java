@@ -7,8 +7,6 @@
  *******************************************************************************/
 package eu.motogymkhana.server.ui.pages;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -31,6 +29,7 @@ import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.slf4j.Logger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.sommeri.less4j.core.parser.LessParser.elementName_return;
 
 import eu.motogymkhana.server.api.result.ListRidersResult;
 import eu.motogymkhana.server.api.result.ListRoundsResult;
@@ -42,15 +41,13 @@ import eu.motogymkhana.server.model.RoundComparator;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
 
 /**
  * Start page of application MotoGymkhana UI.
  */
 public class Index {
-
-	private static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
 
 	@InjectComponent
 	private Zone resultsZone;
@@ -104,9 +101,6 @@ public class Index {
 	private int season = 2016;
 
 	@Property
-	private int otherSeason = 2015;
-
-	@Property
 	private Country country = Country.NL;
 
 	@Inject
@@ -153,7 +147,21 @@ public class Index {
 
 		this.roundNumber = roundNumber;
 		this.season = season;
-		otherSeason = (this.season == 2015) ? 2016 : 2015;
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	void onActivate(String countryString, int season) {
+
+		this.season = season;
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
+	void onActivate(String countryString) {
+
 		country = Country.valueOf(countryString);
 
 		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
@@ -163,8 +171,8 @@ public class Index {
 
 		List returnParams = new ArrayList();
 		returnParams.add(country.name());
-		returnParams.add(String.valueOf(season));
-		returnParams.add(String.valueOf(roundNumber));
+		returnParams.add(season);
+		returnParams.add(roundNumber);
 
 		return returnParams;
 	}
@@ -174,6 +182,7 @@ public class Index {
 	}
 
 	void setupRender() {
+
 		loadRiders();
 		hasTotals = rounds != null && rounds.size() > 1;
 	}
@@ -191,8 +200,8 @@ public class Index {
 		}
 
 		String eventURL = refreshZone.getLink().toRedirectURI();
-		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(),
-				eventURL, refreshRate, 100);
+		javaScriptSupport.require("periodic-zone-updater").with(resultsZone.getClientId(), eventURL,
+				refreshRate, 100);
 	}
 
 	private void loadRiders() {
@@ -206,7 +215,8 @@ public class Index {
 			e.printStackTrace();
 		}
 
-		if (roundsResult != null && roundsResult.hasRounds() && roundsResult.getResultCode() == 200) {
+		if (roundsResult != null && roundsResult.hasRounds()
+				&& roundsResult.getResultCode() == 200) {
 			log.debug("roundsResult size" + roundsResult.getRounds().size());
 
 			setRounds(roundsResult);
@@ -244,6 +254,14 @@ public class Index {
 						rider.setDate(round.getDate());
 					}
 
+					try {
+						log.info("rider " + rider.getFullName() + " " + rider.isRegistered());
+						log.info("rider " + rider.getFullName() + " " + round.getDate() + " "
+								+ (rider.getEUTimes()!=null?rider.getEUTimes().getDate():""));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 					if (rider.isRegistered()) {
 						riders.add(rider);
 					}
@@ -295,7 +313,11 @@ public class Index {
 						r = rr;
 					}
 				}
-				round = r;
+				if (r != null) {
+					round = r;
+				} else {
+					round = rounds.get(0);
+				}
 				roundNumber = r != null ? r.getNumber() : 0;
 				return;
 			}

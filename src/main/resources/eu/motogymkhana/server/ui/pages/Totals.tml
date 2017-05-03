@@ -23,7 +23,7 @@
 <p>
      <t:pagelink page="index" context="[country, season, round.number]" class="links">Start List</t:pagelink>
      <t:pagelink page="results" context="[country, season, round.number]" class="links">Results</t:pagelink>
-	 <t:pagelink page="index"  context="[country, otherSeason, round.number]" class="links">${otherSeason}</t:pagelink>
+	 <a href="https://www.gymcomp.com">Home</a>
 </p>
 </td></tr></table>
 

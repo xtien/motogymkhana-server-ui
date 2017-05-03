@@ -5,7 +5,11 @@
  
  <h2>${title}</h2>
 <p>${message}</p>
-<BR></BR><BR></BR>
+<p>
+	 <t:pagelink page="index" context="[country, season]" class="links">Home</t:pagelink>
+
+</p>
+<BR/>
 	<form t:type="form" class="full-form" t:id="registerForm">
 		<t:errors />	
 		

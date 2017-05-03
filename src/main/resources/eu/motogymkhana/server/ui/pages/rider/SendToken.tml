@@ -17,10 +17,6 @@
 					<input t:type="textfield" t:id="username" />
 				</td>	
 			</tr>
-		<tr>
-				<th><label t:type="label" t:for="token">token:</label></th>
-				<td><input t:type="textfield" t:id="token"/></td>
-			</tr>
 				<tr>
 				<th><label t:type="label" t:for="password">password:</label></th>
 				<td><input type="password" t:type="passwordfield" t:id="password"/></td>

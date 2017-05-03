@@ -43,8 +43,8 @@ import eu.motogymkhana.server.model.Times;
 import eu.motogymkhana.server.properties.GymkhanaUIProperties;
 import eu.motogymkhana.server.ui.Constants;
 import eu.motogymkhana.server.ui.RoundEncoder;
-import eu.motogymkhana.server.ui.web.RidersServiceLocal;
-import eu.motogymkhana.server.ui.web.RoundsServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RidersServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RoundsServiceLocal;
 
 /**
  * Start page of application MotoGymkhana UI.
@@ -109,9 +109,6 @@ public class Totals {
 
 	@Property
 	private int season = 2016;
-
-	@Property
-	private int otherSeason = 2015;
 
 	private List<Integer> points;
 
@@ -245,10 +242,25 @@ public class Totals {
 	void onActivate(String countryString, int season, int roundNumber) {
 		this.roundNumber = roundNumber;
 		this.season = season;
-		otherSeason = (this.season == 2015) ? 2016 : 2015;
 		country = Country.valueOf(countryString);
 		title = Constants.TITLE + " " + this.country.getString();
 	}
+	
+	void onActivate(String countryString, int season) {
+
+		this.season = season;
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+	
+	void onActivate(String countryString) {
+
+		country = Country.valueOf(countryString);
+
+		title = Constants.TITLE + " " + this.country.getString() + " " + this.season;
+	}
+
 
 	List<String> onPassivate() {
 
@@ -284,7 +296,11 @@ public class Totals {
 						r = rr;
 					}
 				}
-				round = r;
+				if(r !=null){
+					round = r;
+				} else {
+					round = rounds.get(0);
+				}
 				roundNumber = r.getNumber();
 				return;
 			}

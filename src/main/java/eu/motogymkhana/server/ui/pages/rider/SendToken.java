@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import eu.motogymkhana.server.api.result.TokenResult;
 import eu.motogymkhana.server.ui.annotations.AnonymousAccess;
 import eu.motogymkhana.server.ui.pages.Index;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RegisterServiceLocal;
 
 @AnonymousAccess
 public class SendToken {

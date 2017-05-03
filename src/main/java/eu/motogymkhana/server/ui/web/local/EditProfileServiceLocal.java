@@ -5,7 +5,7 @@
  * http://www. apache.org/licenses/LICENSE-2.0.
  *  
  *******************************************************************************/
-package eu.motogymkhana.server.ui.web;
+package eu.motogymkhana.server.ui.web.local;
 
 public interface EditProfileServiceLocal {
 

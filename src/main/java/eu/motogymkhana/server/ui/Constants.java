@@ -11,6 +11,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import eu.motogymkhana.server.model.Country;
+
 public class Constants {
 
 	public static final boolean USE_HTTPS = true;
@@ -28,5 +30,8 @@ public class Constants {
 
 	public static final String TITLE = "Moto Gymkhana riders and results";
 	public static final String PROFILE_TITLE = "Moto Gymkhana rider profile";
+	
+	public static Country country;
+	public static int season;
 
 }

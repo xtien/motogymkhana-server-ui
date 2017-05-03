@@ -16,7 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import eu.motogymkhana.server.api.result.RegisterRiderResult;
 import eu.motogymkhana.server.api.result.SigninRiderResult;
-import eu.motogymkhana.server.ui.web.RegisterServiceLocal;
+import eu.motogymkhana.server.ui.web.local.RegisterServiceLocal;
 
 /**
  * Basic Security Realm implementation

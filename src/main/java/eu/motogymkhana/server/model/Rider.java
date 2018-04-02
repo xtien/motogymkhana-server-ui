@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016, Christine Karman
+ * Copyright (c) 2015, 2016, 2017, 2018 Christine Karman
  * This project is free software: you can redistribute it and/or modify it under the terms of
  * the Apache License, Version 2.0. You can find a copy of the license at
  * http://www. apache.org/licenses/LICENSE-2.0.
@@ -280,10 +280,6 @@ public class Rider {
 		return lastName;
 	}
 
-	public String getRiderNumberString() {
-		return Integer.toString(riderNumber);
-	}
-
 	public int get_id() {
 		return _id;
 	}
@@ -461,6 +457,10 @@ public class Rider {
 		return dayRider;
 	}
 
+	public String getDayRiderString() {
+		return dayRider ? "D" : "";
+	}
+
 	public void setDayRider(boolean dayRider) {
 		this.dayRider = dayRider;
 	}
@@ -620,5 +620,10 @@ public class Rider {
 
 	public void hideLastName() {
 		this.lastName = "";
+	}
+
+	public String getIdString() {
+		return Integer.toString(_id);
+
 	}
 }

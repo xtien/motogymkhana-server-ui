@@ -53,7 +53,7 @@
        	<td class='points' bgcolor = '${rider.bibColor}'> 		${rider.position} </td>
       	<td class='points'> 		${rider.country} </td>
       	<td class='points'> 		${rider.gender} </td>
-       	<td class='table-text'> <t:pagelink page="riderPage" context="[country, season, rider.riderNumber]" class="links">	${rider.fullName}</t:pagelink></td>   
+       	<td class='table-text'> <t:pagelink page="riderPage" context="[country, season, rider._id]" class="links">	${rider.fullName}</t:pagelink></td>   
        	<td class='points'> 		<font color="${rider.newBibColor(0)}">${rider.points(0)}</font> </td>
       	<td class='points'> 		<font color="${rider.newBibColor(1)}">${rider.points(1)}</font> </td>
      	<td class='points'> 		<font color="${rider.newBibColor(2)}">${rider.points(2)}</font> </td>

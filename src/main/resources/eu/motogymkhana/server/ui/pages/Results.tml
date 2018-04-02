@@ -58,7 +58,7 @@
 	       	<td class='number' bgcolor = '${rider.bibColor}'> ${rider.startNumber} </td>
 	       	<td class='points'> ${rider.nationality} </td>
 	       	<td class='points'> ${rider.gender} </td>    	
-      	<td class='table-text'> <t:pagelink page="riderPage" context="[country, season, rider.riderNumber]" class="links">	${rider.fullName}</t:pagelink></td>   
+      	<td class='table-text'> <t:pagelink page="riderPage" context="[country, season, rider._id]" class="links">	${rider.fullName}</t:pagelink></td>   
 			<td class='points'>${rider.penalty1}</td>
 			<td class='time'> ${rider.time1}</td>
 	        <td class='points'>${rider.penalty2}</td>

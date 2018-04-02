@@ -81,6 +81,10 @@ public class Registration {
 	public void setDayRider(boolean dayRider) {
 		this.dayRider = dayRider;
 	}
+	
+	public boolean isDayRider(){
+		return dayRider;
+	}
 
 	public Bib getBib() {
 		return bib;
